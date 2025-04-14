@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using MyApiProject.Application.DTOs;
+﻿using MyApiProject.Application.DTOs;
 using MyApiProject.Application.Interfaces;
 using MyApiProject.Infrastructure.Helpers;
 using System;
@@ -7,16 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StackExchange.Redis;
+using System.Text.Json;
 
 namespace MyApiProject.Infrastructure.Services.Session
 {
     public class SessionService : ISessionService
     {
-        private readonly IMemoryCache _memoryCache;
+        private readonly IDatabase _redisDb;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        public SessionService(IMemoryCache memoryCache, IJwtTokenGenerator jwtTokenGenerator)
+        public SessionService(IConnectionMultiplexer redis, IJwtTokenGenerator jwtTokenGenerator)
         {
-            _memoryCache = memoryCache;
+            _redisDb = redis.GetDatabase();
             _jwtTokenGenerator = jwtTokenGenerator;
         }
 
@@ -24,42 +25,47 @@ namespace MyApiProject.Infrastructure.Services.Session
         {
             var cacheKey = GetCacheKey(request.UserName);
 
-            // Check if token already exists
-            if (_memoryCache.TryGetValue(cacheKey, out string existingToken))
+            var existingToken = _redisDb.StringGet(cacheKey);
+            if (!existingToken.IsNullOrEmpty)
             {
-                return existingToken;
+                return existingToken!;
             }
 
-            // Generate and store new token
             var newToken = _jwtTokenGenerator.GenerateJwtToken(request.UserName);
-            _memoryCache.Set(cacheKey, newToken, duration);
-            _memoryCache.Set(newToken, request, duration); // Store session data by token as well
+            var sessionJson = JsonSerializer.Serialize(request);
+
+            // Store username → token
+            _redisDb.StringSet(cacheKey, newToken, duration);
+
+            // Store token → session
+            _redisDb.StringSet(newToken, sessionJson, duration);
 
             return newToken;
         }
 
         public void SaveSession(string token, TokenRequest session, TimeSpan expiration)
         {
-            // Store the session with an expiration time
-            _memoryCache.Set(token, session, expiration);
+            var sessionJson = JsonSerializer.Serialize(session);
+            _redisDb.StringSet(token, sessionJson, expiration);
         }
 
         public TokenRequest GetSession(string token)
         {
-            // Try to retrieve the session data
-            _memoryCache.TryGetValue(token, out TokenRequest session);
-            return session;
+            var sessionJson = _redisDb.StringGet(token);
+            return sessionJson.IsNullOrEmpty
+                ? null
+                : JsonSerializer.Deserialize<TokenRequest>(sessionJson!);
         }
 
         public void DeleteSession(string token)
         {
-            // Remove the session from cache
-            _memoryCache.Remove(token);
+            _redisDb.KeyDelete(token);
         }
 
         private static string GetCacheKey(string username)
         {
             return $"session_{username}";
         }
+
     }
 }

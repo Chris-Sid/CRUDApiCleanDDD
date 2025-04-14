@@ -6,6 +6,7 @@ using MyApiProject.Infrastructure.Logging;
 using MyApiProject.Infrastructure.Services.Address;
 using MyApiProject.Infrastructure.Services.Session;
 using NLog;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace MyApiProject.Infrastructure
            // LogManager.LoadConfiguration("nlog.config"); // Optional, but useful
             services.AddSingleton(typeof(IAppLogger<>), typeof(NLogLogger<>));
             services.AddHttpClient();
-            services.AddMemoryCache();
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IAddressService, AddressService>(provider =>

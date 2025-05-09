@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyApiProject.API.AuthMiddleware;
+using MyApiProject.Application.DTOs;
 using MyApiProject.Domain.Entities;
 using MyApiProject.Infrastructure;
 
@@ -60,11 +61,31 @@ builder.Services.AddSwaggerGen(c =>
  
 var config = builder.Configuration;
 
+builder.Configuration.AddEnvironmentVariables(); // Enable environment variables
+
+var jwtSettings = new JwtSettings
+{
+    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ,
+    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+    Key = Environment.GetEnvironmentVariable("JWT_KEY") ?? "defaultKey",
+    ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var minutes) ? minutes : 60
+};
+
+builder.Services.Configure<JwtSettings>(options =>
+{
+    options.Issuer = jwtSettings.Issuer;
+    options.Audience = jwtSettings.Audience;
+    options.Key = jwtSettings.Key;
+    options.ExpiryMinutes = jwtSettings.ExpiryMinutes;
+});
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
 .AddJwtBearer(options =>
 {
     options.IncludeErrorDetails = true;
@@ -74,9 +95,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = config["JwtSettings:Issuer"],
-        ValidAudience = config["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]))
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
     };
 });
 

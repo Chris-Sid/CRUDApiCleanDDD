@@ -5,9 +5,11 @@ I put mock data (MockAddressData.cs)  for GET Address (RequestId: mock ,"interna
 "externalId": "ext1" Authorization : JWT token) and it returns mock data accordingly in Post it changes the Data if a Mock is tampered with
 Finally I did a dummy xUnit testing in Post Address Service.
 
-For using secrets Manager
+For using secrets Manager 
+on program cs uncomment : 
 //var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 On Powershell:
+
 cd D:\Documents\MyApiProject\MyApiProject 
 dotnet user-secrets init --project "D:\Documents\MyApiProject\MyApiProject\MyApiProject.API.csproj"
 dotnet user-secrets set "JwtSettings:Issuer" "test.gr" 
@@ -16,7 +18,7 @@ dotnet user-secrets set "JwtSettings:Key" "justADummyTokenKeyForDummyTest2025!"
 dotnet user-secrets set "JwtSettings:ExpiryMinutes" "60"
 
 Using Enviromental Variables
-
+on program cs uncomment : 
 //ENviroment Variables
 var jwtSettings = new JwtSettings
 {

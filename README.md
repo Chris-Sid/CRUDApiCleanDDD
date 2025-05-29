@@ -31,7 +31,7 @@ var jwtSettings = new JwtSettings
 
 on Powershell:
 
-use Permantly
+
 [System.Environment]::SetEnvironmentVariable("JWT_ISSUER", "test.gr", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_AUDIENCE", "test", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_KEY", "justADummyTokenKeyForDummyTest2025!", "User")

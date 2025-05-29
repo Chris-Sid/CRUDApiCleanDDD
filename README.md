@@ -18,8 +18,8 @@ dotnet user-secrets set "JwtSettings:Key" "justADummyTokenKeyForDummyTest2025!"
 dotnet user-secrets set "JwtSettings:ExpiryMinutes" "60"
 
 Using Enviromental Variables
+
 on program cs uncomment : 
-//ENviroment Variables
 var jwtSettings = new JwtSettings
 {
     Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),

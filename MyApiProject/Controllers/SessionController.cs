@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using MyApiProject.API.AuthMiddleware;
 using MyApiProject.Application.DTOs;
 using System.Net.Http.Headers;
 using System.Net.Http;
@@ -31,9 +30,9 @@ namespace MyApiProject.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetSession([DefaultValue("en-US")] string accept_Language,[FromBody] TokenRequest body, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSession([DefaultValue("en-US")] string? accept_Language,[FromBody] TokenRequest body, CancellationToken cancellationToken)
         {
-            var token = _sessionService.CreateSession(body, TimeSpan.FromMinutes(30));
+            var token = await _sessionService.GetOrCreateSessionAsync(body, TimeSpan.FromMinutes(30));
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             // Return the token response

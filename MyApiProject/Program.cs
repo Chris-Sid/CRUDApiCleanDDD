@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MyApiProject.API.AuthMiddleware;
 using MyApiProject.Application.DTOs;
 using MyApiProject.Domain.Entities;
 using MyApiProject.Infrastructure;
-
+using MyApiProject.Infrastructure.Persistence;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,13 +61,30 @@ builder.Services.AddSwaggerGen(c =>
  
 var config = builder.Configuration;
 
+var useInMemory = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
+
+if (useInMemory)
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("CRMTestDB"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
+}
+
 builder.Configuration.AddEnvironmentVariables(); // Enable environment variables
 
+//for secret Manager use the below 
+//var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
+//ENviroment Variables
 var jwtSettings = new JwtSettings
 {
-    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ,
+    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
     Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-    Key = Environment.GetEnvironmentVariable("JWT_KEY") ?? "defaultKey",
+    Key = Environment.GetEnvironmentVariable("JWT_KEY"),
     ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var minutes) ? minutes : 60
 };
 
@@ -101,7 +118,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+// Required for EF Core migrations
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var app = builder.Build();
  
 if (app.Environment.IsDevelopment())
@@ -118,7 +136,6 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseMiddleware<DebugJwtMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

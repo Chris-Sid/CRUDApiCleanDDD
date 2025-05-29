@@ -9,9 +9,9 @@ namespace MyApiProject.Application.DTOs
     public partial class TokenRequest
     {
         [Newtonsoft.Json.JsonProperty("userName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string UserName { get; set; } = "OneDealer";
+        public string UserName { get; set; } = "test";
 
         [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Password { get; set; } = "OneDealer2025!";
+        public string Password { get; set; } = "Test2025!";
     }
 }

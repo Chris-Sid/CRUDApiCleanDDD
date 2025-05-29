@@ -19,4 +19,8 @@
     <ProjectReference Include="..\MyApiProject.Infrastructure\MyApiProject.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AuthMiddleware\" />
+  </ItemGroup>
+
 </Project>

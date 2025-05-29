@@ -15,7 +15,7 @@ namespace MyApiProject.Infrastructure.Helpers
         public string GenerateJwtToken(string username)
         {
             // Define the security key and signing credentials
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("onedealerTokenKeyForDummyTest2025!"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("justADummyTokenKeyForDummyTest2025!"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             // Define the claims for the token
@@ -28,7 +28,7 @@ namespace MyApiProject.Infrastructure.Helpers
 
             // Create the token
             var token = new JwtSecurityToken(
-                issuer: "OneDealer.gr",
+                issuer: "test.gr",
                 audience: "test",
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(30),

@@ -31,7 +31,7 @@ namespace xUnitTests
             var mockService = new Mock<IAddressService>();
             var cancellationToken = CancellationToken.None;
             var jwtGenerator = new JwtTokenGenerator();
-            var Token = jwtGenerator.GenerateJwtToken("OneDealer");
+            var Token = jwtGenerator.GenerateJwtToken("Tester");
             
             var Headers = new AddressRequestHeaders()
             {

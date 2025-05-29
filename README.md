@@ -8,6 +8,7 @@ Finally I did a dummy xUnit testing in Post Address Service.
 For using secrets Manager 
 on program cs uncomment : 
 //var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
 On Powershell:
 
 cd D:\Documents\MyApiProject\MyApiProject 
@@ -28,8 +29,9 @@ var jwtSettings = new JwtSettings
     ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var minutes) ? minutes : 60
 };
 
-Powershell:
-Permantly
+on Powershell:
+
+use Permantly
 [System.Environment]::SetEnvironmentVariable("JWT_ISSUER", "test.gr", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_AUDIENCE", "test", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_KEY", "justADummyTokenKeyForDummyTest2025!", "User")

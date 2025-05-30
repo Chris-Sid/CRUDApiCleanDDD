@@ -56,6 +56,7 @@ You can test login with:
 A JWT token will be returned and should be passed as a header:
 
 #### GET Address example of mock data
+you can use Collection included on project named as : Test Custom APIs and import at postman and changing x-Authorization with JWT you generated will work or else use your request like below : 
 ```json
 {
   "internalId": "int1",

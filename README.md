@@ -10,9 +10,8 @@
 updates on services best practices and PostgreSQL will be added as an option also and Authorization in each request
 
 ###Installation Guide
-
 ###Configure JWT Settings
-#### Option A: 🔐 Using Secret Manager**
+### Option A: 🔐 Using Secret Manager**
 Uncomment the following line in Program.cs:
 
 ```csharp

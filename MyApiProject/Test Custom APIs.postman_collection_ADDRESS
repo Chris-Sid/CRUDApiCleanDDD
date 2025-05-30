@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "3c73c1d1-662b-41bd-9fd1-28587e294cc5",
+		"name": "Test Custom APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21516271"
+	},
+	"item": [
+		{
+			"name": "https://localhost:7093/api/dms/addresses/1?Authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJPbmVEZWFsZXIiLCJqdGkiOiI0MTUzMmFhNC1kODQ3LTQ0M2ItYTBlMy0wMzljOWMzNWM1ZDMiLCJleHAiOjE3NDY3ODM3NzgsImlzcyI6Ik9uZURlYWxlci5nciIsImF1ZCI6InRlc3QifQ.O6WI8y",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJPbmVEZWFsZXIiLCJqdGkiOiIwZWYwMTZlMy0wM2NkLTQ5ZGUtYTEyMS04OTBhYTJlZjYwMmIiLCJleHAiOjE3NDY3ODYzMDIsImlzcyI6Ik9uZURlYWxlci5nciIsImF1ZCI6InRlc3QifQ.Px2Jb_R2PuFGUFw3FG3AcKdUvl7vYeaJ-8NnaZhHzD0",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7093/api/dms/addresses/1?addressId=test&ExternalId=ext1&InternalId=int1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"dms",
+						"addresses",
+						"1"
+					],
+					"query": [
+						{
+							"key": "addressId",
+							"value": "test"
+						},
+						{
+							"key": "ExternalId",
+							"value": "ext1"
+						},
+						{
+							"key": "InternalId",
+							"value": "int1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

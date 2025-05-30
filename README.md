@@ -6,6 +6,9 @@
 -  xUnit testing in Post Address Service.
 - Customers CRUD on Redis Cache working at the moment without JWT saved in Memory for 30minuts to test ( Under Construction : code updates as services and PostgreSQL will be added as an option also and Authorization in each request)
 
+### Under Construction
+updates on services best practices and PostgreSQL will be added as an option also and Authorization in each request
+
 ###Installation Guide
 
 ###Configure JWT Settings

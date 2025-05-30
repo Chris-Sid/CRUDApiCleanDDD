@@ -10,7 +10,14 @@
 updates on services best practices and PostgreSQL will be added as an option also and Authorization in each request
 
 # Installation Guide
-Configure JWT Settings
+##### Redis Cache with docker 
+navigate to folder of project on CMD or bash and run
+```bash
+docker compose up -d
+```
+Redis will now be running on localhost:6379, using the exact same behavior as your original container.
+
+### Configure JWT Settings
 ### Option A: 🔐 Using Secret Manager**
 Uncomment the following line in Program.cs:
 

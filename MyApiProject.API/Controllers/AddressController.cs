@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
 using MyApiProject.Application.DTOs;
+using MyApiProject.Application.Helpers;
 using MyApiProject.Domain.Entities;
 using MyApiProject.Infrastructure.Exceptions;
 using MyApiProject.Infrastructure.Logging;
@@ -27,10 +28,24 @@ namespace MyApiProject.API.Controllers
 
         [Authorize]
         [HttpGet("{addressId}")]
-        public async Task<IActionResult> GetAddress(DmsIdentifier Address, AddressRequestHeaders headers, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAddress(DmsIdentifier Address, [ModelBinder(BinderType = typeof(AddressRequestHeadersBinder))] AddressRequestHeaders headers, CancellationToken cancellationToken)
         {
             try
             {
+                //var headers = new AddressRequestHeaders
+                //{
+                //    Authorization = Request.Headers["X-Authorization"],
+                //    RequestId = Request.Headers["X-RequestId"],
+                //    AcceptLanguage = Request.Headers["Accept-Language"],
+                //    EntityOwnerUserId = Request.Headers["X-EntityOwnerUserId"],
+                //    EntityOwnerCompanyId = Request.Headers["X-EntityOwnerCompanyId"],
+                //    DimensionCompany = Request.Headers["X-DimensionCompany"],
+                //    DimensionLocation = Request.Headers["X-DimensionLocation"],
+                //    DimensionBranch = Request.Headers["X-DimensionBranch"],
+                //    DimensionMake = Request.Headers["X-DimensionMake"],
+                //    DimensionMarketSegment = Request.Headers["X-DimensionMarketSegment"],
+                //    TimezoneOffset = Request.Headers["X-TimezoneOffset"].FirstOrDefault() ?? "0"
+                //};
                 var address = await _addressService.GetAddressAsync(Address, headers,cancellationToken);
                 return Ok(address);
             }
@@ -43,7 +58,7 @@ namespace MyApiProject.API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> PostAddress([FromBody] AddressDto Address, AddressRequestHeaders headers, CancellationToken cancellationToken)
+        public async Task<IActionResult> PostAddress([FromBody] AddressDto Address, [ModelBinder(BinderType = typeof(AddressRequestHeadersBinder))] AddressRequestHeaders headers, CancellationToken cancellationToken)
         {
             try
             {

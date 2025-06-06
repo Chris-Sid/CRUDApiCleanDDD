@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Moq;
 using Moq.Protected;
-using MyApiProject.API.Controllers;
 using MyApiProject.Application.DTOs;
 using MyApiProject.Application.Interfaces;
 using MyApiProject.Domain.Entities;
@@ -10,6 +9,7 @@ using MyApiProject.Infrastructure.Data;
 using MyApiProject.Infrastructure.Helpers;
 using MyApiProject.Infrastructure.Helpers.Response;
 using MyApiProject.Infrastructure.Services.Address;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +21,14 @@ using System.Threading.Tasks;
 
 namespace xUnitTests
 {
+ 
     public class AddressControllerTests
     {
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        public AddressControllerTests(IJwtTokenGenerator jwtTokenGenerator)
+        {
+            _jwtTokenGenerator = jwtTokenGenerator;
+        }
 
         [Fact]
         public async Task PostAddress_ReturnsOk_WhenValidAddressIsPosted()
@@ -30,8 +36,9 @@ namespace xUnitTests
             // Arrange
             var mockService = new Mock<IAddressService>();
             var cancellationToken = CancellationToken.None;
-            var jwtGenerator = new JwtTokenGenerator();
-            var Token = jwtGenerator.GenerateJwtToken("Tester");
+   
+  
+            var Token = _jwtTokenGenerator.GenerateJwtToken("Tester","password");
             
             var Headers = new AddressRequestHeaders()
             {

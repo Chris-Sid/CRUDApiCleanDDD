@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyApiProject.Application.DTOs;
 using MyApiProject.Domain.Entities;
 using MyApiProject.Infrastructure;
+using MyApiProject.Infrastructure.Middleware;
 using MyApiProject.Infrastructure.Persistence;
+using MyApiProject.Infrastructure.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +62,8 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
- 
+
+
 var config = builder.Configuration;
 
 var useInMemory = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
@@ -71,7 +76,8 @@ if (useInMemory)
 else
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
+        b => b.MigrationsAssembly("MyApiProject.Infrastructure")).EnableSensitiveDataLogging().LogTo(Console.WriteLine, LogLevel.Information).ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 }
 
 builder.Configuration.AddEnvironmentVariables(); // Enable environment variables
@@ -103,6 +109,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 
+
 .AddJwtBearer(options =>
 {
     options.IncludeErrorDetails = true;
@@ -118,10 +125,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
 // Required for EF Core migrations
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+//builder.Services.AddScoped<SeedService>();
 var app = builder.Build();
- 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate(); // <- this applies migrations at runtime!
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -136,12 +150,11 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
-//app.UseMiddleware<AuthMiddleware>();
-
+ 
 app.MapControllers();
 
 app.Run();

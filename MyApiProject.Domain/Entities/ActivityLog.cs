@@ -8,9 +8,11 @@ namespace MyApiProject.Domain.Entities
 {
     public class ActivityLog
     {
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-        public string Action { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Description { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public Guid OpportunityId { get; set; }
+        public Opportunity? Opportunity { get; set; }
     }
 
 }

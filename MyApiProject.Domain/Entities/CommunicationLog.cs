@@ -9,9 +9,10 @@ namespace MyApiProject.Domain.Entities
     public class CommunicationLog
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Type { get; set; } // Call, Email
+        public string Type { get; set; }
         public DateTime Date { get; set; }
         public string Summary { get; set; }
         public Guid CustomerId { get; set; }
+        public Customer? Customer { get; set; }
     }
 }

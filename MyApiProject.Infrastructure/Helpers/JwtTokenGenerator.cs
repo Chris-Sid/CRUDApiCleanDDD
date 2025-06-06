@@ -7,26 +7,46 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using MyApiProject.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using MyApiProject.Infrastructure.Persistence;
 
 namespace MyApiProject.Infrastructure.Helpers
 {
-    public class JwtTokenGenerator: IJwtTokenGenerator
+    public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        public string GenerateJwtToken(string username)
+        private readonly AppDbContext _dbContext;
+        public JwtTokenGenerator(AppDbContext dbContext)
         {
-            // Define the security key and signing credentials
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("justADummyTokenKeyForDummyTest2025!"));
+            _dbContext = dbContext;
+        }
+        public string GenerateJwtToken(string username, string password)
+        {
+            // Fetch the user from the database
+            var admin = _dbContext.Admins.SingleOrDefault(a => a.Username == username);
+
+            // Validate user exists and has Admin role
+            if (admin == null || admin.Role != "Admin")
+                return null;
+
+            if (!BCrypt.Net.BCrypt.Verify(password, admin.PasswordHash))
+            {
+                // Wrong password
+                return null;
+            }
+
+            var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+;
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // Define the claims for the token
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, username),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        // Add additional claims as needed
-    };
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(ClaimTypes.Role, "Admin"),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
-            // Create the token
             var token = new JwtSecurityToken(
                 issuer: "test.gr",
                 audience: "test",
@@ -35,7 +55,6 @@ namespace MyApiProject.Infrastructure.Helpers
                 signingCredentials: creds
             );
 
-            // Return the serialized token
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

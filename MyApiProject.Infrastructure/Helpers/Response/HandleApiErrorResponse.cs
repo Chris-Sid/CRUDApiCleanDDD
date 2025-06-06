@@ -1,4 +1,4 @@
-﻿using MyApiProject.Application.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyApiProject.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using System;

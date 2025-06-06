@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using StackExchange.Redis;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using MyApiProject.Infrastructure.Exceptions;
+using System.Reflection.PortableExecutable;
 
 namespace MyApiProject.Infrastructure.Services.Session
 {
@@ -57,6 +60,12 @@ namespace MyApiProject.Infrastructure.Services.Session
 
         public async Task<string> GetOrCreateSessionAsync(TokenRequest request, TimeSpan expiration)
         {
+            if (string.IsNullOrWhiteSpace(request?.UserName))
+                throw new ArgumentException("Username cannot be null or empty.");
+
+            if (string.IsNullOrWhiteSpace(request?.Password))
+                throw new ArgumentException("Password cannot be null or empty.");
+
             var cacheKey = GetCacheKey(request.UserName);
 
             var existingToken = await _redisDb.StringGetAsync(cacheKey);
@@ -65,9 +74,13 @@ namespace MyApiProject.Infrastructure.Services.Session
                 return existingToken!;
             }
 
-            var newToken = _jwtTokenGenerator.GenerateJwtToken(request.UserName);
+            var newToken = _jwtTokenGenerator.GenerateJwtToken(request.UserName,request.Password);
+
+            if (newToken is null)
+                throw new ApiException("Unauthorized",(int)StatusCodes.Status401Unauthorized,null,null,null);
 
             var sessionJson = JsonSerializer.Serialize(request);
+
             await _redisDb.StringSetAsync(cacheKey, newToken, expiration);
             await _redisDb.StringSetAsync(newToken, sessionJson, expiration);
 

@@ -8,8 +8,11 @@ namespace MyApiProject.Domain.Entities
 {
     public class FollowUp
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime ScheduledDate { get; set; }
         public bool IsCompleted { get; set; }
         public string Notes { get; set; }
+        public Guid LeadId { get; set; }
+        public Lead Lead { get; set; }
     }
 }

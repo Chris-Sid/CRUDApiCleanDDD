@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyApiProject.Application.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyApiProject.Application.DTOs
 {
+    [ModelBinder(BinderType = typeof(AddressRequestHeadersBinder))]
     public class AddressRequestHeaders
     {
         [FromHeader(Name = "X-Authorization")]

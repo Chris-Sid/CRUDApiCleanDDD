@@ -1,9 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyApiProject.Application.Interfaces;
+using MyApiProject.Domain.Entities;
 using MyApiProject.Infrastructure.Helpers;
 using MyApiProject.Infrastructure.Logging;
+using MyApiProject.Infrastructure.Middleware;
+using MyApiProject.Infrastructure.Persistence;
 using MyApiProject.Infrastructure.Services.Address;
+using MyApiProject.Infrastructure.Services.Customers;
 using MyApiProject.Infrastructure.Services.Session;
 using NLog;
 using StackExchange.Redis;
@@ -32,6 +37,7 @@ namespace MyApiProject.Infrastructure
                                                                            // var requestHeaders = new AddressRequestHeaders(); // If headers are default or empty
                 return new AddressService(provider.GetRequiredService<IHttpClientFactory>(), baseUrl);
             });
+            services.AddScoped<ICustomerService,CustomerService>();
             return services;
         }
     }

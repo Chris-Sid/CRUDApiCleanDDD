@@ -1,0 +1,27 @@
+﻿services:
+  redis:
+    image: redis:7.4.2
+    container_name: redistest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16
+    container_name: crm-postgres
+    environment:
+      POSTGRES_USER: Crm_user
+      POSTGRES_PASSWORD: Crm_password2025!
+      POSTGRES_DB: crm_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      #- ./init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  postgres_data:

@@ -13,6 +13,7 @@ namespace MyApiProject.Domain.Entities
         public decimal EstimatedValue { get; set; }
         public string Stage { get; set; } // Negotiation, Proposal Sent, Won, Lost
         public Guid RelatedCustomerId { get; set; }
+        public Customer? RelatedCustomer { get; set; }
         public List<ActivityLog> ActivityLogs { get; set; } = new();
     }
 }

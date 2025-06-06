@@ -49,10 +49,10 @@ namespace MyApiProject.API.Controllers.MockCRUD
                 var customer = customers.FirstOrDefault(c => c.Id == id);
                 if (customer == null) return NotFound();
 
-                customer.Name = updated.Name;
-                customer.Email = updated.Email;
-                customer.Phone = updated.Phone;
-                customer.Status = updated.Status;
+                customer.name = updated.name;
+                customer.email = updated.email;
+                customer.phone = updated.phone;
+                customer.status = updated.status;
                 await _cacheService.SetAsync(CacheKey, customers);
 
                 return NoContent();

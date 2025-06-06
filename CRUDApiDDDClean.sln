@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApiProject.API", "MyApiProject\MyApiProject.API.csproj", "{0A36869D-E4F6-4439-AE7B-1EFC6BE2CAA0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApiProject.Application", "MyApiProject.Application\MyApiProject.Application.csproj", "{7E003865-8D1C-47CE-A807-4E71A65C9E2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApiProject.Domain", "MyApiProject.Domain\MyApiProject.Domain.csproj", "{871C0B18-F789-415F-801C-84D3E469485F}"
@@ -13,16 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApiProject.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xUnitTests", "xUnitTests\xUnitTests.csproj", "{F5976D06-4DDD-4042-BBB6-814E5814704F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApiProject.API", "MyApiProject.API\MyApiProject.API.csproj", "{64AB8DDA-60EA-01D4-DBEF-2554CACD6167}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0A36869D-E4F6-4439-AE7B-1EFC6BE2CAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A36869D-E4F6-4439-AE7B-1EFC6BE2CAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A36869D-E4F6-4439-AE7B-1EFC6BE2CAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A36869D-E4F6-4439-AE7B-1EFC6BE2CAA0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E003865-8D1C-47CE-A807-4E71A65C9E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E003865-8D1C-47CE-A807-4E71A65C9E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E003865-8D1C-47CE-A807-4E71A65C9E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{F5976D06-4DDD-4042-BBB6-814E5814704F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5976D06-4DDD-4042-BBB6-814E5814704F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5976D06-4DDD-4042-BBB6-814E5814704F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64AB8DDA-60EA-01D4-DBEF-2554CACD6167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64AB8DDA-60EA-01D4-DBEF-2554CACD6167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64AB8DDA-60EA-01D4-DBEF-2554CACD6167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64AB8DDA-60EA-01D4-DBEF-2554CACD6167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

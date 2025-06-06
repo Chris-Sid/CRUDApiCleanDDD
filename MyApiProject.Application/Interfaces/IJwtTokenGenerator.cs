@@ -8,6 +8,6 @@ namespace MyApiProject.Application.Interfaces
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateJwtToken(string username);
+        string? GenerateJwtToken(string username, string password);
     }
 }

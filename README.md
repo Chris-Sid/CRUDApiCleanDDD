@@ -10,7 +10,7 @@
 updates on services with best practices . Also it Will be added Mapper to fulfill requests and make it more efficient & readable.
 
 # Installation Guide
-##### Redis Cache with docker 
+##### Redis Cache & PostgreSQL with docker 
 navigate to folder of project on CMD or bash and run
 ```bash
 docker compose up -d

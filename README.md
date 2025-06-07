@@ -1,7 +1,7 @@
 ### Features
 
 - Login creates JWT (username: admin Password: Admin2025! )
-- JWT Token is returned which is used in each request (address for the moment) in the X-Authorization Header
+- JWT Token is returned which is used in each request at the X-Authorization Header
 - Test mock data (MockAddressData.cs)  for GET Address (RequestId: mock ,"internalId": "int1","externalId": "ext1" Authorization : JWT token) and it returns mock data accordingly in Post it changes the Data if a Mock is tampered with
 -  xUnit testing in Post Address Service.
 - Set UseInMemoryDatabase true to test Customers CRUD on Redis Cache (Mock Data) working at the moment without JWT saved in Memory for 30minuts . Set UseInMemoryDatabase False to test CRUD ON PostgreSQL after of running Docker on both scenarios

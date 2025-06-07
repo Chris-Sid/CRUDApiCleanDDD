@@ -58,9 +58,9 @@ Navigate to project path and Set environment variables in PowerShell:
 🧪 Test Login
 You can test login with:
 
-**Username**: test
+**Username**: admin
 
-**Password**: Test2025!
+**Password**: Admin2025!
 
 A JWT token will be returned and should be passed as a header:
 

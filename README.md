@@ -1,5 +1,10 @@
+###Technology Stack
+- Redis Cache – Enables efficient caching mechanisms for improved application performance and reduced database load.
+- PostgreSQL on Docker – A robust relational database running in a containerized environment, ensuring portability and scalability.
+- AutoMapper – Simplifies object-to-object mapping, making it easier to handle complex data structures and model transformations.
+- Domain-Driven Design (DDD) – Implements a strategic approach to software architecture by structuring code around core business logic.
+- Clean Architecture – Ensures maintainability and separation of concerns, promoting modular design for scalability and long-term flexibility
 ### Features
-
 - Login creates JWT (username: admin Password: Admin2025! )
 - JWT Token is returned which is used in each request at the X-Authorization Header
 - Test mock data (MockAddressData.cs)  for GET Address (RequestId: mock ,"internalId": "int1","externalId": "ext1" Authorization : JWT token) and it returns mock data accordingly in Post it changes the Data if a Mock is tampered with

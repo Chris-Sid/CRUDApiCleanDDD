@@ -13,7 +13,7 @@
 - Set UseInMemoryDatabase true to test Customers CRUD on Redis Cache (Mock Data) working at the moment without JWT saved in Memory for 30minuts . Set UseInMemoryDatabase False to test CRUD ON PostgreSQL after of running Docker on both scenarios
 
 ### Under Construction
-updates on services with best practices .
+updates on services with best practices . Unit testing examples.
 
 # Installation Guide
 ##### Redis Cache & PostgreSQL with docker 

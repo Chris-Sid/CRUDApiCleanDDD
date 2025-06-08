@@ -29,6 +29,7 @@ namespace MyApiProject.Infrastructure
             services.AddHttpClient();
             services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IAddressService, AddressService>(provider =>
             {

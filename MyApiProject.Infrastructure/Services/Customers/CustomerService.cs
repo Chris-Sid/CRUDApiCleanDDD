@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using MyApiProject.Application.Interfaces;
 using MyApiProject.Domain.Entities;
+using MyApiProject.Domain.Entities.GetCustomerDTOs;
 using MyApiProject.Infrastructure.Persistence;
 
 namespace MyApiProject.Infrastructure.Services.Customers
@@ -12,17 +15,20 @@ namespace MyApiProject.Infrastructure.Services.Customers
     public class CustomerService : ICustomerService
     {
         private readonly AppDbContext _context;
-
-        public CustomerService(AppDbContext context)
+        private readonly IMapper _mapper;
+        public CustomerService(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Customer>> GetCustomersAsync()
+        public async Task<IEnumerable<CustomerGetDto>> GetCustomersAsync()
         {
-            return await _context.customers
-                .Include(c => c.contacts)
-                .ToListAsync();
+            var customers = await _context.customers
+            .ProjectTo<CustomerGetDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+            return customers;
         }
 
         public async Task<Customer?> GetCustomerAsync(Guid id)

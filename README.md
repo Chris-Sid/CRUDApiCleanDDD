@@ -38,7 +38,7 @@ A scalable, testable CRM system with JWT-based authentication, Redis caching, Po
 - 🧠 Real business logic: Analytics, Status handling, Deal stage tracking
 - 🔄 Mock testing mode with in-memory data for isolated testing
 - 🕒 Redis caching for `Customer` data (30 min expiration)
-- 🔧[ Switch between **In-Memory** & **PostgreSQL** via config](http://https://github.com/Chris-Sid/CRUDApiCleanDDD/blob/master/README.md#-switch-between-in-memory-and-postgresql " Switch between **In-Memory** & **PostgreSQL** via config")
+- 🔧 [Switch between **In-Memory** & **PostgreSQL** via config](#-switch-between-in-memory-and-postgresql)
 - 🧪 **xUnit** tests for key endpoints
 
 ---

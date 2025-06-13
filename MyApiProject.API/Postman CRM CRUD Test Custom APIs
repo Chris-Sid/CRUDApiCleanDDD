@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "64a34bf9-63b7-487d-9c69-ceb6adee90b5",
+		"name": "Test Custom APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21516271"
+	},
+	"item": [
+		{
+			"name": "Get Address by Id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiMTJiNGFiMmItNDNjZS00ZTM3LWJkYWUtN2Q1NDBkNThiNGQ0IiwiZXhwIjoxNzQ5MjAzMDkwLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.jEExwuvl-nRhyFMpLj_fy5gH3t1fr-ZAWyICE59FF0c",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:7093/api/dms/addresses/1?addressId=1&ExternalId=ext1&InternalId=int1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"dms",
+						"addresses",
+						"1"
+					],
+					"query": [
+						{
+							"key": "addressId",
+							"value": "1"
+						},
+						{
+							"key": "ExternalId",
+							"value": "ext1"
+						},
+						{
+							"key": "InternalId",
+							"value": "int1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Customers",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiMWY5NTAxY2QtZWI3ZS00ZTQxLWIxYTktY2RlMzlmMjkwYmJkIiwiZXhwIjoxNzQ5NzU2NDM3LCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.6g2Bo5AoKD3jXG7uq2tJrd93S8aXMKtMlnzxG8kSbUw",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Acme Corp\",\r\n  \"email\": \"info@acme.com\",\r\n  \"phone\": \"+1234567890\",\r\n  \"status\": \"Active\",\r\n  \"tags\": [\"VIP\", \"LongTerm\"],\r\n  \"contacts\": [\r\n    {\r\n      \"name\": \"Alice Johnson\",\r\n      \"email\": \"alice.johnson@acme.com\",\r\n      \"phone\": \"+30585838348\"\r\n    }\r\n  ],\r\n  \"createdDate\": \"2024-01-01T09:00:00Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7093/api/Customers/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"Customers",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7c6b1944-21cf-4023-8cd9-6d9771799ca2",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "in-review",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Customer",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiZjlkYTlmODctODMwMC00ODNlLThhN2UtNmY3N2JhODc4MjRlIiwiZXhwIjoxNzQ5MjMxNDYyLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.eFBbx9w63K8Zy8GJRP52Piv0AbvFM5O_eXfyVn0cOa0",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Updated Customer Name\",\r\n  \"email\":\"testingUpdate@gmail.com\",\r\n  \"Phone\":\"6950444444\",\r\n  \"status\":\"Trying update status\",\r\n  \"contacts\": [\r\n    {\r\n      \"name\": \"Alice Doe\",\r\n      \"email\": \"alice.doe@example.com\"\r\n    },\r\n    {\r\n      \"name\": \"Bob Smith\",\r\n      \"email\": \"bob.smith@example.com\"\r\n    }\r\n  ],\r\n  \"notes\": [\r\n    {\r\n      \"createdBy\": \"Admin\",\r\n      \"content\": \"Followed up on project proposal.\"\r\n    }\r\n  ],\r\n  \"communicationLogs\": [\r\n    {\r\n      \"type\": \"Email\",\r\n      \"date\": \"2025-06-05T10:00:00Z\",\r\n      \"summary\": \"Sent project quote\"\r\n    }\r\n  ],\r\n  \"opportunities\": [\r\n    {\r\n      \"title\": \"New ERP Deal\",\r\n      \"estimatedValue\": 25000,\r\n      \"stage\": \"Proposal Sent\",\r\n      \"activityLogs\": [\r\n        {\r\n          \"activityType\": \"Meeting\",\r\n          \"description\": \"Initial discussion with client\",\r\n          \"activityDate\": \"2025-06-01T14:30:00Z\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7093/api/Customers/3b18c961-0906-4406-afa0-818d4327e7e5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"Customers",
+						"3b18c961-0906-4406-afa0-818d4327e7e5"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7c6b1944-21cf-4023-8cd9-6d9771799ca2",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "in-review",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiMWY5NTAxY2QtZWI3ZS00ZTQxLWIxYTktY2RlMzlmMjkwYmJkIiwiZXhwIjoxNzQ5NzU2NDM3LCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.6g2Bo5AoKD3jXG7uq2tJrd93S8aXMKtMlnzxG8kSbUw",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"test2\",\r\n  \"email\": \"test2@example.com\",\r\n  \"phone\": \"6940440444\",\r\n  \"status\": \"pending\",\r\n  \"tags\": [\r\n    \"Lead\"\r\n  ],\r\n  \"contacts\": [\r\n    {\r\n      \"name\": \"test2\",\r\n      \"email\": \"test2@example.com\",\r\n      \"phone\": \"6940440444\"\r\n    }\r\n  ],\r\n  \"createdDate\": \"2025-06-03T11:21:02.870Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7093/api/Customers",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"Customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer by ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiZjlkYTlmODctODMwMC00ODNlLThhN2UtNmY3N2JhODc4MjRlIiwiZXhwIjoxNzQ5MjMxNDYyLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.eFBbx9w63K8Zy8GJRP52Piv0AbvFM5O_eXfyVn0cOa0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"test2\",\r\n  \"email\": \"test2@example.com\",\r\n  \"phone\": \"6940440444\",\r\n  \"status\": \"pending\",\r\n  \"tags\": [\r\n    \"Lead\"\r\n  ],\r\n  \"contacts\": [\r\n    {\r\n      \"name\": \"test2\",\r\n      \"email\": \"test2@example.com\",\r\n      \"phone\": \"6940440444\"\r\n    }\r\n  ],\r\n  \"createdDate\": \"2025-06-03T11:21:02.870Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7093/api/Customers/3b18c961-0906-4406-afa0-818d4327e7e5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"Customers",
+						"3b18c961-0906-4406-afa0-818d4327e7e5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Lead",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiMWY5NTAxY2QtZWI3ZS00ZTQxLWIxYTktY2RlMzlmMjkwYmJkIiwiZXhwIjoxNzQ5NzU2NDM3LCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.6g2Bo5AoKD3jXG7uq2tJrd93S8aXMKtMlnzxG8kSbUw",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"id\": \"b1a7e8c2-1d2f-4e3a-9b5a-123456789abc\",\r\n  \"source\": \"Web\",\r\n  \"contactInfo\": \"bob.smith@acme.com\",\r\n  \"assignedTo\": \"Jane Smith\",\r\n  \"status\": \"New\",\r\n  \"createdDate\": \"2024-06-01T10:00:00Z\",\r\n  \"followUps\": [\r\n    {\r\n      \"id\": \"c2b7e8c2-1d2f-4e3a-9b5a-123456789abd\",\r\n      \"scheduledDate\": \"2024-06-10T10:00:00Z\",\r\n      \"isCompleted\": false,\r\n      \"notes\": \"Initial follow-up\",\r\n      \"leadId\": \"b1a7e8c2-1d2f-4e3a-9b5a-123456789abc\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7093/api/Leads/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"Leads",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7c6b1944-21cf-4023-8cd9-6d9771799ca2",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "in-review",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Opportunity ",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiMWY5NTAxY2QtZWI3ZS00ZTQxLWIxYTktY2RlMzlmMjkwYmJkIiwiZXhwIjoxNzQ5NzU2NDM3LCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.6g2Bo5AoKD3jXG7uq2tJrd93S8aXMKtMlnzxG8kSbUw",
+						"type": "text"
+					},
+					{
+						"key": "X-RequestId",
+						"value": "mock",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"d3c7e8c2-1d2f-4e3a-9b5a-123456789abe\",\r\n  \"title\": \"Big Deal\",\r\n  \"estimatedValue\": 50000.00,\r\n  \"stage\": \"Negotiation\",\r\n  \"relatedCustomerId\": \"f8ddccb1-8b1d-441b-9d99-5cc1eb32d432\",\r\n  \"activityLogs\": [\r\n    {\r\n      \"id\": \"e4d7e8c2-1d2f-4e3a-9b5a-123456789abf\",\r\n      \"description\": \"Initial meeting\",\r\n      \"createdAt\": \"2024-12-02T14:00:00Z\",\r\n      \"opportunityId\": \"d3c7e8c2-1d2f-4e3a-9b5a-123456789abe\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7093/api/opportunities/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7093",
+					"path": [
+						"api",
+						"opportunities",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

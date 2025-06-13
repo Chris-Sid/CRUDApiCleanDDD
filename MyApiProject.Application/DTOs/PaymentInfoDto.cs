@@ -1,4 +1,5 @@
 ﻿using MyApiProject.Domain.Entities;
+using MyApiProject.Domain.Entities.Customers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApiProject.Application.Interfaces;
-using MyApiProject.Domain.Entities;
+using MyApiProject.Domain.Entities.Customers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "Admin")]
 public class CustomersController : ControllerBase
 {
-    private readonly ICustomerService _customerService;
-    public CustomersController(ICustomerService customerService)
+    private readonly ICustomerRepository _customerService;
+    public CustomersController(ICustomerRepository customerService)
     {
         _customerService = customerService;
     }

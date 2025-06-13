@@ -1,5 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApiProject.Domain.Entities;
+using MyApiProject.Domain.Entities.Activity;
+using MyApiProject.Domain.Entities.Customers;
+using MyApiProject.Domain.Entities.FollowUps;
+using MyApiProject.Domain.Entities.Leads;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -9,6 +9,8 @@ using MyApiProject.Infrastructure.Middleware;
 using MyApiProject.Infrastructure.Persistence;
 using MyApiProject.Infrastructure.Services.Address;
 using MyApiProject.Infrastructure.Services.Customers;
+using MyApiProject.Infrastructure.Services.Leads;
+using MyApiProject.Infrastructure.Services.Opportunities;
 using MyApiProject.Infrastructure.Services.Session;
 using NLog;
 using StackExchange.Redis;
@@ -31,6 +33,8 @@ namespace MyApiProject.Infrastructure
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ILeadRepository, LeadRepository>();
+            services.AddScoped<IOpportunityRepository, OpportunityRepository>();
             services.AddScoped<IAddressService, AddressService>(provider =>
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
@@ -38,7 +42,7 @@ namespace MyApiProject.Infrastructure
                                                                            // var requestHeaders = new AddressRequestHeaders(); // If headers are default or empty
                 return new AddressService(provider.GetRequiredService<IHttpClientFactory>(), baseUrl);
             });
-            services.AddScoped<ICustomerService,CustomerService>();
+            services.AddScoped<ICustomerRepository,CustomerService>();
             return services;
         }
     }

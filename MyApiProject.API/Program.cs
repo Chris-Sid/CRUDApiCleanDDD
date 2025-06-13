@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MyApiProject.Application.DTOs;
+using MyApiProject.Application.Mappings;
 using MyApiProject.Domain.Entities;
 using MyApiProject.Infrastructure;
 using MyApiProject.Infrastructure.Middleware;
@@ -20,6 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddInfrastructure();
 
 
@@ -130,11 +132,15 @@ builder.Services.AddAuthentication(options =>
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 //builder.Services.AddScoped<SeedService>();
 var app = builder.Build();
-using (var scope = app.Services.CreateScope())
+if (!useInMemory)
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate(); // <- this applies migrations at runtime!
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate(); // <- this applies migrations at runtime!
+    }
 }
+
 
 if (app.Environment.IsDevelopment())
 {

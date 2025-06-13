@@ -7,12 +7,14 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using MyApiProject.Application.Interfaces;
 using MyApiProject.Domain.Entities;
-using MyApiProject.Domain.Entities.GetCustomerDTOs;
+using MyApiProject.Domain.Entities.Activity;
+using MyApiProject.Domain.Entities.Customers;
+using MyApiProject.Domain.Entities.Customers.GetCustomerDTOs;
 using MyApiProject.Infrastructure.Persistence;
 
 namespace MyApiProject.Infrastructure.Services.Customers
 {
-    public class CustomerService : ICustomerService
+    public class CustomerService : ICustomerRepository
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;

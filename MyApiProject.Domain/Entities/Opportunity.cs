@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyApiProject.Domain.Entities.Activity;
+using MyApiProject.Domain.Entities.Customers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

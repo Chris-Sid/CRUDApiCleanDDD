@@ -3,6 +3,38 @@
 A scalable, testable CRM system with JWT-based authentication, Redis caching, PostgreSQL storage, and clean DDD practices — all orchestrated with Docker. Built for real-world scenarios like customer tracking, lead generation, deal flow, and analytics.
 
 ---
+## 🧪 API Features
+
+- ✅ **Full CRUD Operations**  
+  Manage **Customers**, **Leads**, and **Opportunities** through clean, RESTful endpoints.
+
+- 📊 **Analytics Endpoint**  
+  Summarizes key metrics like active leads, top sales reps, inactive customers, and won deals this month.
+
+- 🧠 **Real Business Logic**  
+  Includes domain-specific rules: lead assignment, opportunity stages, customer activity tracking.
+
+- 🚀 **Batch POST Support** *(Postman-ready)*  
+  Easily seed demo data via bulk `POST` requests for Customers, Leads, and Opportunities. Ideal for analytics and testing.
+
+- 🧪 **Mock Mode for Testing**  
+  Toggle `UseInMemoryDatabase = true` to test full functionality using in-memory data (with Redis caching enabled).
+
+- 🕒 **Redis Caching**  
+  Caches `Customer` records for 30 minutes to reduce DB load and improve response times.
+
+- 🔄 **Switchable Persistence Layer**  
+  Configure between **In-Memory + Redis** or full **PostgreSQL** using a simple config flag.  
+  👉 [Jump to config section](#switch-between-in-memory--postgresql-via-config)
+
+- 🔐 **JWT-Based Authentication**  
+  Secure endpoints using JSON Web Tokens (JWT). Supports login + `X-Authorization` headers for testing.
+
+- 🧪 **xUnit Test Coverage**  
+  Unit tests included for business logic and API endpoints to ensure reliability and maintainability.
+
+- 📦 **Docker-Ready Setup**  
+  Run the entire stack (`API + PostgreSQL + Redis`) with a single `docker-compose up -d` command.
 
 ## 🚀 Technology Stack
 

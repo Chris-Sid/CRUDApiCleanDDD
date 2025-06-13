@@ -1,91 +1,133 @@
-### 🚀 Technology Stack
+# 🧠 CRM Backend Microservice
 
-| Tech                           | Purpose                                                                                          |
-| ------------------------------ | ------------------------------------------------------------------------------------------------ |
-| **PostgreSQL (Dockerized)**    | Reliable relational database with containerized deployment for easy setup and scalability.       |
-| **Redis**                      | In-memory caching to optimize performance and reduce repetitive DB hits.                         |
-| **AutoMapper**                 | Clean mapping between DTOs and domain models to streamline data transformations.                 |
-| **Domain-Driven Design (DDD)** | Organizes the codebase around the business domain for clarity and maintainability.               |
-| **Clean Architecture**         | Layered architecture separating concerns — makes the app scalable, testable, and easy to extend. |
-| **Entity Framework Core**      | ORM for querying and managing PostgreSQL data using strongly-typed C# objects.                   |
-| **ASP.NET Core Web API**       | Backend framework powering RESTful endpoints.                                                    |
-| **Docker Compose**             | Orchestrates multi-container environments for running the API, DB, and Redis seamlessly.         |
+A scalable, testable CRM system with JWT-based authentication, Redis caching, PostgreSQL storage, and clean DDD practices — all orchestrated with Docker. Built for real-world scenarios like customer tracking, lead generation, deal flow, and analytics.
 
+---
 
-### Features
-- Login creates JWT (username: admin Password: Admin2025! )
-- JWT Token is returned which is used in each request at the X-Authorization Header
-- Test mock data (MockAddressData.cs)  for GET Address (RequestId: mock ,"internalId": "int1","externalId": "ext1" Authorization : JWT token) and it returns mock data accordingly in Post it changes the Data if a Mock is tampered with
--  xUnit testing in Post Address Service.
-- Set UseInMemoryDatabase true to test Customers CRUD on Redis Cache (Mock Data) saved in Memory for 30minutes. Set UseInMemoryDatabase False to test CRUD ON PostgreSQL after of running Docker on both scenarios
+## 🚀 Technology Stack
 
-### Under Construction
-updates on services with best practices . Unit testing examples.
+| Technology                | Purpose                                                                 |
+|---------------------------|-------------------------------------------------------------------------|
+| **PostgreSQL (Dockerized)** | Relational DB in a container for easy setup and scalability.        |
+| **Redis**                 | In-memory caching for faster performance and reduced DB load.          |
+| **Entity Framework Core** | ORM to manage PostgreSQL via strongly-typed C# entities.              |
+| **AutoMapper**            | DTO ↔ Entity mapping for clean separation of concerns.                 |
+| **ASP.NET Core Web API**  | Powers secure REST endpoints with JWT authentication.                  |
+| **Docker Compose**        | Spins up the API, Redis, and PostgreSQL in one command.                |
+| **Domain-Driven Design**  | Code is modeled around real business rules for maintainability.        |
+| **Clean Architecture**    | Layered structure for testability, scalability, and separation of concerns.|
 
-# Installation Guide
-##### Redis Cache & PostgreSQL with docker 
-navigate to folder of project on CMD or bash and run
-```bash
-docker compose up -d
+---
+
+## 🔐 Authentication
+
+- **Login** with:
+  - Username: `admin`
+  - Password: `Admin2025!`
+- On success, a **JWT token** is returned.
+- Include the token in every request using the custom header:
+  ```
+  X-Authorization: {your-token}
+  ```
+
+---
+
+## 🧪 API Features
+
+- ✅ Full **CRUD support** for Customers, Leads, Opportunities
+- 🧠 Real business logic: Analytics, Status handling, Deal stage tracking
+- 🔄 Mock testing mode with in-memory data for isolated testing
+- 🕒 Redis caching for `Customer` data (30 min expiration)
+- 🔧 Switch between **In-Memory** & **PostgreSQL** via config
+- 🧪 **xUnit** tests for key endpoints
+
+---
+
+## 📦 Postman Collection
+
+You can test the entire API using the bundled collection:
+
+ 👉 Import  on **Postman** the **file named** : ***CRM CRUD Test Custom APIs***  located at : **MyApiProject.API**
+
+### Example: `GET` Address (Mock Mode)
+
+```json
+POST /api/address
+Headers:
+  X-Authorization: {your-jwt}
+  X-RequestId: mock
+Body:
+{
+  "internalId": "int1",
+  "externalId": "ext1",
+  "addressId": "1"
+}
 ```
-Redis will now be running on localhost:6379, using the exact same behavior as your original container.
 
-### Configure JWT Settings
-### Option A: 🔐 Using Secret Manager**
-Uncomment the following line in Program.cs:
+---
 
+## ⚙️ Setup & Installation
+
+### 1️⃣ Run Dependencies via Docker
+
+```bash
+docker-compose up -d
+```
+
+- PostgreSQL: `localhost:5432`
+- Redis: `localhost:6379`
+
+---
+
+### 2️⃣ Configure JWT Settings
+
+#### Option A: 🔐 Secret Manager (Dev)
+
+In `Program.cs`, uncomment:
 ```csharp
 // var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 ```
-Then in PowerShell, run:
-```
-cd D:\Documents\MyApiProject\MyApiProject
-dotnet user-secrets init --project "D:\Documents\MyApiProject\MyApiProject\MyApiProject.API.csproj"
 
+Then run:
+
+```powershell
+dotnet user-secrets init --project "Path\To\YourProject.csproj"
 dotnet user-secrets set "JwtSettings:Issuer" "test.gr"
 dotnet user-secrets set "JwtSettings:Audience" "test"
 dotnet user-secrets set "JwtSettings:Key" "justADummyTokenKeyForDummyTest2025!"
 dotnet user-secrets set "JwtSettings:ExpiryMinutes" "60"
 ```
-#### Option B: 🌍 Using Environment Variables
-Uncomment the following code block in Program.cs:
-```csharp
-var jwtSettings = new JwtSettings
-{
-    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
-    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-    Key = Environment.GetEnvironmentVariable("JWT_KEY"),
-    ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var minutes) ? minutes : 60
-};
 
-```
-Navigate to project path and Set environment variables in PowerShell:
-```
+#### Option B: 🌍 Environment Variables
+
+In `Program.cs`, uncomment the env variable block. Then in PowerShell:
+
+```powershell
 [System.Environment]::SetEnvironmentVariable("JWT_ISSUER", "test.gr", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_AUDIENCE", "test", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_KEY", "justADummyTokenKeyForDummyTest2025!", "User")
 [System.Environment]::SetEnvironmentVariable("JWT_EXPIRY_MINUTES", "60", "User")
-
 ```
-###  Mock Data & Testing
-🧪 Test Login
-You can test login with:
 
-**Username**: admin
+---
 
-**Password**: Admin2025!
+## 🛠 Switch Between In-Memory and PostgreSQL
 
-A JWT token will be returned and should be passed as a header:
+Edit `appsettings.json`:
 
-#### GET Address example of mock data
-you can use Collection included on project named as : Test Custom APIs and import at postman and changing x-Authorization with JWT you generated will work or else use your request like below : 
 ```json
-{
-  "internalId": "int1",
-  "externalId": "ext1"
-  "X-Authorization":"your JWT returned from login"
-  "X-RequestId":"mock"
-  "addressId":"1"
-}
-
+"UseInMemoryDatabase": true // or false
 ```
+
+- `true`: Enables mock data with Redis Cache.
+- `false`: Uses actual PostgreSQL DB.
+
+---
+
+## 🚧 Under Construction
+
+- ⏳ More advanced domain validation rules
+- 🧪 More xUnit test coverage (services + API layers)
+- 📈 Add Swagger docs for easy endpoint discovery
+
+---

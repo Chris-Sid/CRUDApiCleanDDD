@@ -56,4 +56,15 @@ public class CustomersController : ControllerBase
             return NotFound();
         return NoContent();
     }
+
+    [HttpPost("batch")]
+    public async Task<IActionResult> CreateBatch([FromBody] CustomerBatchCreateDto dto)
+    {
+        foreach (var customerDto in dto.Customers)
+        {
+            await _customerService.CreateCustomerAsync(customerDto);
+        }
+        return Ok(new { message = $"{dto.Customers.Count} customers created." });
+    }
+
 }

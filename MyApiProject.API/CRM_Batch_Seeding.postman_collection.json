@@ -1,0 +1,103 @@
+{
+  "info": {
+    "name": "CRM Batch Seeding Collection",
+    "_postman_id": "49ac55a1-6ad8-4d49-a3fa-a7b52ab6753e",
+    "description": "Postman collection to batch-create Customers, Leads, and Opportunities for analytics testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Batch Create Customers",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "{{jwt_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customers\": [\n    {\n      \"name\": \"Acme Corp\",\n      \"email\": \"info@acme.com\",\n      \"phone\": \"+1234567890\",\n      \"status\": \"Active\",\n      \"tags\": [\n        \"VIP\",\n        \"LongTerm\"\n      ],\n      \"contacts\": [\n        {\n          \"name\": \"Alice Johnson\",\n          \"email\": \"alice.johnson@acme.com\",\n          \"phone\": \"+30585838348\"\n        }\n      ],\n      \"createdDate\": \"2024-01-01T09:00:00Z\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/customers/batch",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "customers",
+            "batch"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Batch Create Leads",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "{{jwt_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"leads\": [\n    {\n      \"id\": \"b1a7e8c2-1d2f-4e3a-9b5a-123456789abc\",\n      \"source\": \"Web\",\n      \"contactInfo\": \"bob.smith@acme.com\",\n      \"assignedTo\": \"Jane Smith\",\n      \"status\": \"New\",\n      \"createdDate\": \"2024-06-01T10:00:00Z\",\n      \"followUps\": [\n        {\n          \"id\": \"c2b7e8c2-1d2f-4e3a-9b5a-123456789abd\",\n          \"scheduledDate\": \"2024-06-10T10:00:00Z\",\n          \"isCompleted\": false,\n          \"notes\": \"Initial follow-up\",\n          \"leadId\": \"b1a7e8c2-1d2f-4e3a-9b5a-123456789abc\"\n        }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/leads/batch",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "leads",
+            "batch"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Batch Create Opportunities",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "{{jwt_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"opportunities\": [\n    {\n      \"id\": \"d3c7e8c2-1d2f-4e3a-9b5a-123456789abe\",\n      \"title\": \"Big Deal\",\n      \"estimatedValue\": 50000.0,\n      \"stage\": \"Negotiation\",\n      \"relatedCustomerId\": \"f8ddccb1-8b1d-441b-9d99-5cc1eb32d432\",\n      \"activityLogs\": [\n        {\n          \"id\": \"e4d7e8c2-1d2f-4e3a-9b5a-123456789abf\",\n          \"description\": \"Initial meeting\",\n          \"createdAt\": \"2024-12-02T14:00:00Z\",\n          \"opportunityId\": \"d3c7e8c2-1d2f-4e3a-9b5a-123456789abe\"\n        }\n      ]\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/opportunities/batch",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "opportunities",
+            "batch"
+          ]
+        }
+      }
+    }
+  ]
+}

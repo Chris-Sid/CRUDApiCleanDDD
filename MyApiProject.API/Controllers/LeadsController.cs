@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApiProject.Application.Interfaces;
+using MyApiProject.Domain.Entities.Customers;
 using MyApiProject.Domain.Entities.Leads;
+using MyApiProject.Infrastructure.Services.Customers;
 
 namespace MyApiProject.API.Controllers
 {
@@ -16,6 +18,16 @@ namespace MyApiProject.API.Controllers
         {
             var lead = await _leadRepo.CreateAsync(dto);
             return CreatedAtAction(nameof(CreateLead), new { id = lead.Id }, lead);
+        }
+
+        [HttpPost("batch")]
+        public async Task<IActionResult> CreateBatch([FromBody] LeadBatchCreateDto dto)
+        {
+            foreach (var customerDto in dto.Leads)
+            {
+                await _leadRepo.CreateAsync(customerDto);
+            }
+            return Ok(new { message = $"{dto.Leads.Count} customers created." });
         }
     }
 }

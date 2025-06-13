@@ -47,7 +47,7 @@ A scalable, testable CRM system with JWT-based authentication, Redis caching, Po
 
 You can test the entire API using the bundled collection:
 
- 👉 Import  on **Postman** the **file named** : ***CRM CRUD Test Custom APIs***  located at : **MyApiProject.API**
+ 👉 Import  on **Postman** the **file named** : ***CRM CRUD Test Custom APIs*** & CRM_Batch_Seeding.postman_collection located at : **MyApiProject.API**
 
 ### Example: `GET` Address (Mock Mode)
 

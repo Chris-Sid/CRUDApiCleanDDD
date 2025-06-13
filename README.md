@@ -1,9 +1,15 @@
-### Technology Stack
-- Redis Cache – Enables efficient caching mechanisms for improved application performance and reduced database load.
-- PostgreSQL on Docker – A robust relational database running in a containerized environment, ensuring portability and scalability.
-- AutoMapper – Simplifies object-to-object mapping, making it easier to handle complex data structures and model transformations.
-- Domain-Driven Design (DDD) – Implements a strategic approach to software architecture by structuring code around core business logic.
-- Clean Architecture – Ensures maintainability and separation of concerns, promoting modular design for scalability and long-term flexibility
+### 🚀 Technology Stack
+| Tech                           | Purpose                                                                                          |
+| ------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **PostgreSQL (Dockerized)**    | Reliable relational database with containerized deployment for easy setup and scalability.       |
+| **Redis**                      | In-memory caching to optimize performance and reduce repetitive DB hits.                         |
+| **AutoMapper**                 | Clean mapping between DTOs and domain models to streamline data transformations.                 |
+| **Domain-Driven Design (DDD)** | Organizes the codebase around the business domain for clarity and maintainability.               |
+| **Clean Architecture**         | Layered architecture separating concerns — makes the app scalable, testable, and easy to extend. |
+| **Entity Framework Core**      | ORM for querying and managing PostgreSQL data using strongly-typed C# objects.                   |
+| **ASP.NET Core Web API**       | Backend framework powering RESTful endpoints.                                                    |
+| **Docker Compose**             | Orchestrates multi-container environments for running the API, DB, and Redis seamlessly.         |
+
 
 ### Features
 - Login creates JWT (username: admin Password: Admin2025! )

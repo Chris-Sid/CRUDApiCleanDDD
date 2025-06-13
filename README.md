@@ -1,4 +1,5 @@
-### 🚀 Technology Stack
+### 🚀 Features
+
 | Tech                           | Purpose                                                                                          |
 | ------------------------------ | ------------------------------------------------------------------------------------------------ |
 | **PostgreSQL (Dockerized)**    | Reliable relational database with containerized deployment for easy setup and scalability.       |

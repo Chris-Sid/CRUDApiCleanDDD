@@ -69,7 +69,7 @@ Body:
 ## ⚙️ Setup & Installation
 
 ### 1️⃣ Run Dependencies via Docker
-
+navigate  cmd/PowerShell/Bash on  \MyApiProject\MyApiProject.API and run
 ```bash
 docker-compose up -d
 ```

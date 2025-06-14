@@ -8,7 +8,7 @@ A scalable, testable CRM system with JWT-based authentication, Redis caching, Po
 - ✅ **Full CRUD Operations**  
   Manage **Customers**, **Leads**, and **Opportunities** through clean, RESTful endpoints.
   
-- ✅ ** Aggregation Service Summary Analytics**  
+- ✅ **Aggregation Service Summary Analytics**  
 
 - 📊 **Analytics Endpoint**  
   Summarizes key metrics like active leads, top sales reps, inactive customers, and won deals this month.

@@ -163,3 +163,5 @@ Edit `appsettings.json`:
 - 📈 Add Swagger docs for easy endpoint discovery
 
 ---
+> 🏷️ Tech Tags:  
+> `dotnet-core` `webapi` `clean-architecture` `domain-driven-design` `redis` `postgresql` `jwt-authentication` `crm-backend` `docker-compose` `microservices`

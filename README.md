@@ -1,6 +1,6 @@
 # 🧠 CRM CRUD operations on Backend API
 
-A scalable, testable CRM system with JWT-based authentication, Redis caching, PostgreSQL storage, and clean DDD practices — all orchestrated with Docker. Built for real-world scenarios like customer tracking, lead generation, deal flow, and analytics.
+A scalable, testable CRM system with JWT-based authentication, Redis caching, PostgreSQL storage, and clean DDD practices — all orchestrated with Docker. Built for real-world scenarios like customer tracking, lead generation, deal flow, and analytics aggregation service.
 
 ---
 ## 🧪 API Features

@@ -1,0 +1,62 @@
+name: 🚀 CI/CD - Build, Test CRM Backend
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  ASPNETCORE_ENVIRONMENT: Development
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: crm
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      ConnectionStrings__DefaultConnection: "Host=localhost;Database=crm;Username=postgres;Password=${{ secrets.POSTGRES_PASSWORD }}"
+
+    steps:
+    - name: ⬇️ Checkout code
+      uses: actions/checkout@v3
+
+    - name: ⚙️ Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: 🕒 Wait for PostgreSQL to be ready
+      run: |
+        for i in {1..30}; do
+          if pg_isready -h localhost -p 5432 -U postgres; then
+            echo "✅ PostgreSQL is ready"
+            break
+          fi
+          echo "⏳ Waiting for PostgreSQL..."
+          sleep 2
+        done
+
+    - name: 📦 Restore dependencies
+      run: dotnet restore
+
+    - name: 🏗️ Build solution
+      run: dotnet build --no-restore --configuration Release
+
+    - name: ✅ Run tests
+      run: dotnet test --no-build --verbosity normal

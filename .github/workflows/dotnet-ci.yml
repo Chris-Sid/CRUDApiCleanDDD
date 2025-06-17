@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main", "CI/CD_PipeLines" ]
   pull_request:
-    branches: [ "main", ,"CI/CD_PipeLines" ]
+    branches: [ "main", "CI/CD_PipeLines" ]
 
 env:
   DOTNET_VERSION: '8.0.x'

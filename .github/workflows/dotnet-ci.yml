@@ -30,7 +30,7 @@ jobs:
           --health-retries 5
 
     env:
-      ConnectionStrings__DefaultConnection: "Host=localhost;Database=crm;Username=postgres;Password=${{ secrets.POSTGRES_PASSWORD }}"
+      ConnectionStrings__DefaultConnection: "Host=localhost;Database=crm_db;Username=Crm_user;Password=${{ secrets.POSTGRES_PASSWORD }}"
 
     steps:
     - name: ⬇️ Checkout code

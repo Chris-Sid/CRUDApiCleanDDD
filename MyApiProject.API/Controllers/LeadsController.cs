@@ -27,7 +27,7 @@ namespace MyApiProject.API.Controllers
             {
                 await _leadRepo.CreateAsync(customerDto);
             }
-            return Ok(new { message = $"{dto.Leads.Count} customers created." });
+            return Ok(new { message = $"{dto.Leads.Count} Leads created." });
         }
     }
 }

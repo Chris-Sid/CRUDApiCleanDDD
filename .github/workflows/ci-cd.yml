@@ -2,7 +2,7 @@ name: Build & Push CRM API
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main","CI/CD_PipeLines" ]
 
 jobs:
   build-and-push:

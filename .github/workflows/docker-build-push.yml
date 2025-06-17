@@ -2,7 +2,7 @@ name: 📦 Build & Push Docker Image
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "CI/CD_PipeLines" ]
 
 env:
   IMAGE_NAME: yourdockerhubusername/crm-backend

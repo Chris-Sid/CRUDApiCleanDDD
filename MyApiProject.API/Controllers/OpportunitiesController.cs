@@ -27,7 +27,7 @@ namespace MyApiProject.API.Controllers
             {
                 await _opportunityRepo.CreateAsync(customerDto);
             }
-            return Ok(new { message = $"{dto.Opportunities.Count} customers created." });
+            return Ok(new { message = $"{dto.Opportunities.Count} Opportunities created." });
         }
     }
 }

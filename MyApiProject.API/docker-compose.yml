@@ -11,10 +11,8 @@
   postgres:
     image: postgres:16
     container_name: crm-postgres
-    environment:
-      POSTGRES_USER: Crm_user
-      POSTGRES_PASSWORD: Crm_password2025!
-      POSTGRES_DB: crm_db
+    env_file:
+      - ./MyCrm.API/.env   
     ports:
       - "5432:5432"
     volumes:

@@ -164,4 +164,4 @@ Edit `appsettings.json`:
 
 ---
 > 🏷️ Tech Tags:  
-> `dotnet-core` `webapi` `clean-architecture` `domain-driven-design` `redis` `postgresql` `jwt-authentication` `crm-backend` `docker-compose` `microservices`
+> `dotnet-core` `webapi` `clean-architecture` `domain-driven-design` `redis` `postgresql` `jwt-authentication` `crm-backend` `docker-compose` 

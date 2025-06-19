@@ -25,7 +25,6 @@ namespace xUnitTests
         [Fact]
         public async Task Get_ReturnsOk_WithCustomerList()
         {
-            // Arrange
             var mockService = new Mock<ICustomerRepository>();
             mockService.Setup(s => s.GetCustomerAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new Customer { name = "Test", email = "test@test.com" });
@@ -35,9 +34,10 @@ namespace xUnitTests
             // Act
             var result = await controller.GetCustomer(Guid.NewGuid());
 
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
+            // Unwrap ActionResult<Customer>
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var customer = Assert.IsType<Customer>(okResult.Value);
+
             Assert.Equal("Test", customer.name);
         }
     }

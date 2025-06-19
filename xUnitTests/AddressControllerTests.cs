@@ -21,36 +21,31 @@ using System.Threading.Tasks;
 
 namespace xUnitTests
 {
- 
+
     public class AddressControllerTests
     {
-        private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        public AddressControllerTests(IJwtTokenGenerator jwtTokenGenerator)
-        {
-            _jwtTokenGenerator = jwtTokenGenerator;
-        }
-
         [Fact]
         public async Task PostAddress_ReturnsOk_WhenValidAddressIsPosted()
         {
-            // Arrange
-            var mockService = new Mock<IAddressService>();
+            // Mock JwtTokenGenerator
+            var mockJwt = new Mock<IJwtTokenGenerator>();
+            mockJwt.Setup(j => j.GenerateJwtToken(It.IsAny<string>(), It.IsAny<string>()))
+                   .Returns("mocked-jwt-token");
+
             var cancellationToken = CancellationToken.None;
-   
-  
-            var Token = _jwtTokenGenerator.GenerateJwtToken("Tester","password");
-            
-            var Headers = new AddressRequestHeaders()
+            var token = mockJwt.Object.GenerateJwtToken("Tester", "password");
+
+            var Headers = new AddressRequestHeaders
             {
-                Authorization = "Bearer" + Token,
-                RequestId= "mock"
+                Authorization = "Bearer " + token,
+                RequestId = "mock"
             };
 
-            var originalAddress = MockAddressData.Addresses[0]; // Use one of the mocked addresses
+            var originalAddress = MockAddressData.Addresses[0];
             var UpdatedAddressDtoObject = originalAddress.Clone();
             UpdatedAddressDtoObject.AltLanguageCity = "MAROUSI TEST POST";
 
-            // Mock HttpMessageHandler to prevent real HTTP calls
+            // Mock HttpClient behavior
             var mockHttpHandler = new Mock<HttpMessageHandler>();
             mockHttpHandler
                 .Protected()
@@ -58,13 +53,10 @@ namespace xUnitTests
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)) // Will not be called in mock path
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)) // won't be hit in mock
                 .Verifiable();
 
-            // Create a mock HttpClient
             var mockHttpClient = new HttpClient(mockHttpHandler.Object);
-
-            // Mock IHttpClientFactory
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
             mockHttpClientFactory
                 .Setup(factory => factory.CreateClient(It.IsAny<string>()))
@@ -73,24 +65,16 @@ namespace xUnitTests
             var baseUrl = "https://localhost:7093/swagger/index.html";
             var service = new AddressService(mockHttpClientFactory.Object, baseUrl);
 
-
-            // Act
+            //  Act
             var result = await service.PostAddressAsync(UpdatedAddressDtoObject, Headers, cancellationToken);
 
             // Assert
             Assert.NotNull(result);
-            if (string.Equals(UpdatedAddressDtoObject.AltLanguageCity, result.AltLanguageCity, StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine($"Updated Address Value: {UpdatedAddressDtoObject.AltLanguageCity}");
-                Console.WriteLine($"Actual Address Value: {result.AltLanguageCity}");
-                Console.WriteLine("Expected Value (from assertion): Alt Mock City");
-            }
-
             Assert.Equal(UpdatedAddressDtoObject.AltLanguageCity, result.AltLanguageCity);
             Assert.Equal(originalAddress.AddressId.InternalId, result.AddressId.InternalId);
-            Assert.Equal(originalAddress.AltLanguageCity, result.AltLanguageCity); //should be false in case post works fine without exceptions
+            Assert.NotEqual(originalAddress.AltLanguageCity, result.AltLanguageCity);
 
-            // HTTP call should not happen due to "mock" logic
+            // Confirm no real HTTP call was made
             mockHttpHandler.Protected().Verify(
                 "SendAsync",
                 Times.Never(),
@@ -98,4 +82,5 @@ namespace xUnitTests
                 ItExpr.IsAny<CancellationToken>());
         }
     }
+
 }

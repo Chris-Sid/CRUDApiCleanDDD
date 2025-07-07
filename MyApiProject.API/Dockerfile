@@ -3,7 +3,7 @@
 # Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ..   #  Copy everything from root, including .sln
+COPY . .
 RUN dotnet restore MyApiProject.sln
 RUN dotnet publish MyApiProject.API/MyApiProject.API.csproj -c Release -o /app/publish
 

@@ -16,18 +16,32 @@ namespace MyApiProject.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOpportunity([FromBody] OpportunityCreateDto dto)
         {
-            var opportunity = await _opportunityRepo.CreateAsync(dto);
-            return CreatedAtAction(nameof(CreateOpportunity), new { id = opportunity.Id }, opportunity);
+            try
+            {
+                var opportunity = await _opportunityRepo.CreateAsync(dto);
+                return CreatedAtAction(nameof(CreateOpportunity), new { id = opportunity.Id }, opportunity);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("batch")]
         public async Task<IActionResult> CreateBatch([FromBody] OpportunityBatchCreateDto dto)
         {
-            foreach (var customerDto in dto.Opportunities)
+            try
             {
-                await _opportunityRepo.CreateAsync(customerDto);
+                foreach (var customerDto in dto.Opportunities)
+                {
+                    await _opportunityRepo.CreateAsync(customerDto);
+                }
+                return Ok(new { message = $"{dto.Opportunities.Count} opportunities created." });
             }
-            return Ok(new { message = $"{dto.Opportunities.Count} customers created." });
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

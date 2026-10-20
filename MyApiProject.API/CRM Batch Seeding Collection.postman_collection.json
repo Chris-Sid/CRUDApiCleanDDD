@@ -1,0 +1,252 @@
+{
+  "info": {
+    "_postman_id": "2573e644-5967-4b68-9d83-f9a9fb5d16c3",
+    "name": "CRM Batch Seeding Collection",
+    "description": "Postman collection to batch-create Customers, Leads, and Opportunities for analytics testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21516271"
+  },
+  "item": [
+    {
+      "name": "Get ALl leads",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNjY3ZWI5NDQtYmIwNS00N2Y2LTlhYWEtYTZiZjg1Mjc0ZTFjIiwiZXhwIjoxNzQ5ODM1NzMzLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.vZ9ZUueOLY1T0z_XCs-irdqccBBu6dH6dTKL6Ji2DHg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customers\": [\n    {\n      \"name\": \"Acme Corp\",\n      \"email\": \"info@acme.com\",\n      \"phone\": \"+1234567890\",\n      \"status\": \"Active\",\n      \"tags\": [\"VIP\", \"LongTerm\"],\n      \"contacts\": [\n        {\n          \"name\": \"Alice Johnson\",\n          \"email\": \"alice.johnson@acme.com\",\n          \"phone\": \"+30585838348\"\n        }\n      ],\n      \"createdDate\": \"2024-01-01T09:00:00Z\"\n    },\n    {\n      \"name\": \"Beta Industries\",\n      \"email\": \"contact@beta.com\",\n      \"phone\": \"+1234567891\",\n      \"status\": \"Active\",\n      \"tags\": [\"Partner\"],\n      \"contacts\": [\n        {\n          \"name\": \"Bob Grey\",\n          \"email\": \"bob.grey@beta.com\",\n          \"phone\": \"+30585838349\"\n        }\n      ],\n      \"createdDate\": \"2023-11-15T10:00:00Z\"\n    },\n    {\n      \"name\": \"Gamma LLC\",\n      \"email\": \"info@gamma.com\",\n      \"phone\": \"+1234567892\",\n      \"status\": \"Inactive\",\n      \"tags\": [\"Churned\"],\n      \"contacts\": [\n        {\n          \"name\": \"Carol White\",\n          \"email\": \"carol.white@gamma.com\",\n          \"phone\": \"+30585838350\"\n        }\n      ],\n      \"createdDate\": \"2023-06-10T11:00:00Z\"\n    },\n    {\n      \"name\": \"Delta Tech\",\n      \"email\": \"hello@delta.com\",\n      \"phone\": \"+1234567893\",\n      \"status\": \"Active\",\n      \"tags\": [\"New\"],\n      \"contacts\": [\n        {\n          \"name\": \"David Black\",\n          \"email\": \"david.black@delta.com\",\n          \"phone\": \"+30585838351\"\n        }\n      ],\n      \"createdDate\": \"2024-03-05T12:00:00Z\"\n    },\n    {\n      \"name\": \"Epsilon Solutions\",\n      \"email\": \"support@epsilon.com\",\n      \"phone\": \"+1234567894\",\n      \"status\": \"Prospect\",\n      \"tags\": [],\n      \"contacts\": [\n        {\n          \"name\": \"Eve Green\",\n          \"email\": \"eve.green@epsilon.com\",\n          \"phone\": \"+30585838352\"\n        }\n      ],\n      \"createdDate\": \"2024-05-10T13:00:00Z\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/customers/batch",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "customers",
+            "batch"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Customers",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiYjBjYjZlMzYtNjE1ZS00MmEyLTljNDMtMDFhMmFhMDlkOWU1IiwiZXhwIjoxNzkyNTEzNTUyLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.Z85VgM8LV-EkjRCBuTukejeFKeoZ6qnL2OJ-eut170Y"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customers\": [\n    {\n      \"name\": \"Acme Corp\",\n      \"email\": \"info@acme.com\",\n      \"phone\": \"+1234567890\",\n      \"status\": \"Active\",\n      \"tags\": [\"VIP\", \"LongTerm\"],\n      \"contacts\": [\n        {\n          \"name\": \"Alice Johnson\",\n          \"email\": \"alice.johnson@acme.com\",\n          \"phone\": \"+30585838348\"\n        }\n      ],\n      \"createdDate\": \"2024-01-01T09:00:00Z\"\n    },\n    {\n      \"name\": \"Beta Industries\",\n      \"email\": \"contact@beta.com\",\n      \"phone\": \"+1234567891\",\n      \"status\": \"Active\",\n      \"tags\": [\"Partner\"],\n      \"contacts\": [\n        {\n          \"name\": \"Bob Grey\",\n          \"email\": \"bob.grey@beta.com\",\n          \"phone\": \"+30585838349\"\n        }\n      ],\n      \"createdDate\": \"2023-11-15T10:00:00Z\"\n    },\n    {\n      \"name\": \"Gamma LLC\",\n      \"email\": \"info@gamma.com\",\n      \"phone\": \"+1234567892\",\n      \"status\": \"Inactive\",\n      \"tags\": [\"Churned\"],\n      \"contacts\": [\n        {\n          \"name\": \"Carol White\",\n          \"email\": \"carol.white@gamma.com\",\n          \"phone\": \"+30585838350\"\n        }\n      ],\n      \"createdDate\": \"2023-06-10T11:00:00Z\"\n    },\n    {\n      \"name\": \"Delta Tech\",\n      \"email\": \"hello@delta.com\",\n      \"phone\": \"+1234567893\",\n      \"status\": \"Active\",\n      \"tags\": [\"New\"],\n      \"contacts\": [\n        {\n          \"name\": \"David Black\",\n          \"email\": \"david.black@delta.com\",\n          \"phone\": \"+30585838351\"\n        }\n      ],\n      \"createdDate\": \"2024-03-05T12:00:00Z\"\n    },\n    {\n      \"name\": \"Epsilon Solutions\",\n      \"email\": \"support@epsilon.com\",\n      \"phone\": \"+1234567894\",\n      \"status\": \"Prospect\",\n      \"tags\": [],\n      \"contacts\": [\n        {\n          \"name\": \"Eve Green\",\n          \"email\": \"eve.green@epsilon.com\",\n          \"phone\": \"+30585838352\"\n        }\n      ],\n      \"createdDate\": \"2024-05-10T13:00:00Z\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/customers/",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "customers",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DbUpdateConcurrencyException A client",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNjY3ZWI5NDQtYmIwNS00N2Y2LTlhYWEtYTZiZjg1Mjc0ZTFjIiwiZXhwIjoxNzQ5ODM1NzMzLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.vZ9ZUueOLY1T0z_XCs-irdqccBBu6dH6dTKL6Ji2DHg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n        \"id\": \"0614bf62-6012-4e6b-8b7c-a763a0f9833a\",\n        \"source\": \"Email Campaign\",\n        \"contactInfo\": \"lead2@beta.com\",\n        \"assignedTo\": \"Tom Jones\",\n        \"status\": \"Contacted\",\n        \"createdDate\": \"2024-05-20T12:00:00+03:00\",\n        \"followUps\": [],\n        \"rowVersion\": \"AAAAAAAAB9E=\"\n    }"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/leads/0614bf62-6012-4e6b-8b7c-a763a0f9833a",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "leads",
+            "0614bf62-6012-4e6b-8b7c-a763a0f9833a"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DbUpdateConcurrencyException B client Copy",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNjY3ZWI5NDQtYmIwNS00N2Y2LTlhYWEtYTZiZjg1Mjc0ZTFjIiwiZXhwIjoxNzQ5ODM1NzMzLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.vZ9ZUueOLY1T0z_XCs-irdqccBBu6dH6dTKL6Ji2DHg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n        \"id\": \"0614bf62-6012-4e6b-8b7c-a763a0f9833a\",\n        \"source\": \"Email Campaign\",\n        \"contactInfo\": \"lead2@beta.com\",\n        \"assignedTo\": \"agent03\",\n        \"status\": \"Converted\",\n        \"createdDate\": \"2024-05-20T12:00:00+03:00\",\n        \"followUps\": [],\n        \"rowVersion\": \"AAAAAAAAB9E=\"\n    }"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/leads/0614bf62-6012-4e6b-8b7c-a763a0f9833a",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "leads",
+            "0614bf62-6012-4e6b-8b7c-a763a0f9833a"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Batch Create Customers",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNjY3ZWI5NDQtYmIwNS00N2Y2LTlhYWEtYTZiZjg1Mjc0ZTFjIiwiZXhwIjoxNzQ5ODM1NzMzLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.vZ9ZUueOLY1T0z_XCs-irdqccBBu6dH6dTKL6Ji2DHg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customers\": [\n    {\n      \"name\": \"Acme Corp\",\n      \"email\": \"info@acme.com\",\n      \"phone\": \"+1234567890\",\n      \"status\": \"Active\",\n      \"tags\": [\"VIP\", \"LongTerm\"],\n      \"contacts\": [\n        {\n          \"name\": \"Alice Johnson\",\n          \"email\": \"alice.johnson@acme.com\",\n          \"phone\": \"+30585838348\"\n        }\n      ],\n      \"createdDate\": \"2024-01-01T09:00:00Z\"\n    },\n    {\n      \"name\": \"Beta Industries\",\n      \"email\": \"contact@beta.com\",\n      \"phone\": \"+1234567891\",\n      \"status\": \"Active\",\n      \"tags\": [\"Partner\"],\n      \"contacts\": [\n        {\n          \"name\": \"Bob Grey\",\n          \"email\": \"bob.grey@beta.com\",\n          \"phone\": \"+30585838349\"\n        }\n      ],\n      \"createdDate\": \"2023-11-15T10:00:00Z\"\n    },\n    {\n      \"name\": \"Gamma LLC\",\n      \"email\": \"info@gamma.com\",\n      \"phone\": \"+1234567892\",\n      \"status\": \"Inactive\",\n      \"tags\": [\"Churned\"],\n      \"contacts\": [\n        {\n          \"name\": \"Carol White\",\n          \"email\": \"carol.white@gamma.com\",\n          \"phone\": \"+30585838350\"\n        }\n      ],\n      \"createdDate\": \"2023-06-10T11:00:00Z\"\n    },\n    {\n      \"name\": \"Delta Tech\",\n      \"email\": \"hello@delta.com\",\n      \"phone\": \"+1234567893\",\n      \"status\": \"Active\",\n      \"tags\": [\"New\"],\n      \"contacts\": [\n        {\n          \"name\": \"David Black\",\n          \"email\": \"david.black@delta.com\",\n          \"phone\": \"+30585838351\"\n        }\n      ],\n      \"createdDate\": \"2024-03-05T12:00:00Z\"\n    },\n    {\n      \"name\": \"Epsilon Solutions\",\n      \"email\": \"support@epsilon.com\",\n      \"phone\": \"+1234567894\",\n      \"status\": \"Prospect\",\n      \"tags\": [],\n      \"contacts\": [\n        {\n          \"name\": \"Eve Green\",\n          \"email\": \"eve.green@epsilon.com\",\n          \"phone\": \"+30585838352\"\n        }\n      ],\n      \"createdDate\": \"2024-05-10T13:00:00Z\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/customers/batch",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "customers",
+            "batch"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Batch Create Leads",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNjY3ZWI5NDQtYmIwNS00N2Y2LTlhYWEtYTZiZjg1Mjc0ZTFjIiwiZXhwIjoxNzQ5ODM1NzMzLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.vZ9ZUueOLY1T0z_XCs-irdqccBBu6dH6dTKL6Ji2DHg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"leads\": [\n    {\n      \"id\": \"11111111-aaaa-bbbb-cccc-111111111111\",\n      \"source\": \"Web\",\n      \"contactInfo\": \"lead1@acme.com\",\n      \"assignedTo\": \"Jane Smith\",\n      \"status\": \"New\",\n      \"createdDate\": \"2024-06-01T10:00:00Z\",\n      \"followUps\": [\n        {\n          \"id\": \"f1a1a1a1-b2b2-c3c3-d4d4-111111111111\",\n          \"scheduledDate\": \"2024-06-10T10:00:00Z\",\n          \"isCompleted\": false,\n          \"notes\": \"Initial follow-up\",\n          \"leadId\": \"11111111-aaaa-bbbb-cccc-111111111111\"\n        }\n      ]\n    },\n    {\n      \"id\": \"22222222-aaaa-bbbb-cccc-222222222222\",\n      \"source\": \"Email Campaign\",\n      \"contactInfo\": \"lead2@beta.com\",\n      \"assignedTo\": \"Tom Jones\",\n      \"status\": \"Contacted\",\n      \"createdDate\": \"2024-05-20T09:00:00Z\",\n      \"followUps\": []\n    },\n    {\n      \"id\": \"33333333-aaaa-bbbb-cccc-333333333333\",\n      \"source\": \"Referral\",\n      \"contactInfo\": \"lead3@gamma.com\",\n      \"assignedTo\": \"Anna Blue\",\n      \"status\": \"Interested\",\n      \"createdDate\": \"2024-05-25T14:00:00Z\",\n      \"followUps\": []\n    },\n    {\n      \"id\": \"44444444-aaaa-bbbb-cccc-444444444444\",\n      \"source\": \"AdWords\",\n      \"contactInfo\": \"lead4@delta.com\",\n      \"assignedTo\": \"Chris Red\",\n      \"status\": \"New\",\n      \"createdDate\": \"2024-06-02T08:30:00Z\",\n      \"followUps\": []\n    },\n    {\n      \"id\": \"55555555-aaaa-bbbb-cccc-555555555555\",\n      \"source\": \"LinkedIn\",\n      \"contactInfo\": \"lead5@epsilon.com\",\n      \"assignedTo\": \"Karen Yellow\",\n      \"status\": \"Qualified\",\n      \"createdDate\": \"2024-06-03T15:20:00Z\",\n      \"followUps\": []\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/leads/batch",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "leads",
+            "batch"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Batch Create Opportunities",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwianRpIjoiNjY3ZWI5NDQtYmIwNS00N2Y2LTlhYWEtYTZiZjg1Mjc0ZTFjIiwiZXhwIjoxNzQ5ODM1NzMzLCJpc3MiOiJ0ZXN0LmdyIiwiYXVkIjoidGVzdCJ9.vZ9ZUueOLY1T0z_XCs-irdqccBBu6dH6dTKL6Ji2DHg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"opportunities\": [\n    {\n      \"id\": \"aaaa1111-bbbb-cccc-dddd-aaaa11111111\",\n      \"title\": \"Deal A\",\n      \"estimatedValue\": 50000.0,\n      \"stage\": \"Negotiation\",\n      \"relatedCustomerId\": \"4e8f23f5-d889-4d29-b9dd-8a4c0c086011\",\n      \"activityLogs\": [\n        {\n          \"id\": \"act-0001\",\n          \"description\": \"Intro meeting\",\n          \"createdAt\": \"2024-12-01T10:00:00Z\",\n          \"opportunityId\": \"aaaa1111-bbbb-cccc-dddd-aaaa11111111\"\n        }\n      ]\n    },\n    {\n      \"id\": \"aaaa2222-bbbb-cccc-dddd-aaaa22222222\",\n      \"title\": \"Deal B\",\n      \"estimatedValue\": 120000.0,\n      \"stage\": \"Proposal Sent\",\n      \"relatedCustomerId\": \"6b19c8bd-81cc-46ac-ba11-621230d86002\",\n      \"activityLogs\": []\n    },\n    {\n      \"id\": \"aaaa3333-bbbb-cccc-dddd-aaaa33333333\",\n      \"title\": \"Deal C\",\n      \"estimatedValue\": 20000.0,\n      \"stage\": \"Qualified\",\n      \"relatedCustomerId\": \"6d6761fb-c269-4dce-8330-b67014aa8ac5\",\n      \"activityLogs\": []\n    },\n    {\n      \"id\": \"aaaa4444-bbbb-cccc-dddd-aaaa44444444\",\n      \"title\": \"Deal D\",\n      \"estimatedValue\": 90000.0,\n      \"stage\": \"Negotiation\",\n      \"relatedCustomerId\": \"80d1a3bf-4382-4c4b-bceb-86445e6ff57b\",\n      \"activityLogs\": []\n    },\n    {\n      \"id\": \"aaaa5555-bbbb-cccc-dddd-aaaa55555555\",\n      \"title\": \"Deal E\",\n      \"estimatedValue\": 35000.0,\n      \"stage\": \"Won\",\n      \"relatedCustomerId\": \"fe56cbdd-0dc4-4ca5-8904-d1ba0c71f561\",\n      \"activityLogs\": []\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "https://localhost:7093/api/opportunities/batch",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7093",
+          "path": [
+            "api",
+            "opportunities",
+            "batch"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

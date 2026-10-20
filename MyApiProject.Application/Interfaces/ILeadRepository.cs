@@ -12,6 +12,8 @@ namespace MyApiProject.Application.Interfaces
     {
         Task<List<Lead>> GetAllAsync();
         Task<Lead> CreateAsync(LeadCreateDto dto);
+        Task<Lead?> GetByIdAsync(Guid id);
+        Task<Lead?> UpdateAsync(Guid id, UpdateLeadRequest request);
     }
 
 }

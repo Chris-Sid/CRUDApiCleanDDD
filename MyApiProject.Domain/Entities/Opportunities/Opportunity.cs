@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyApiProject.Domain.Entities
 {
-    public class Opportunity
+    public class Opportunity : ConcurrentEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Title { get; set; }

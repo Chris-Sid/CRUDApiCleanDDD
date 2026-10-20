@@ -4,6 +4,7 @@ using MyApiProject.Domain.Entities.Activity;
 using MyApiProject.Domain.Entities.Customers;
 using MyApiProject.Domain.Entities.FollowUps;
 using MyApiProject.Domain.Entities.Leads;
+using MyApiProject.Infrastructure.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace MyApiProject.Infrastructure.Persistence
                 .HasOne(o => o.RelatedCustomer)
                 .WithMany(c => c.opportunities)
                 .HasForeignKey(o => o.RelatedCustomerId);
-
+ 
             modelBuilder.Entity<ActivityLog>()
                 .HasOne(al => al.Opportunity)
                 .WithMany(o => o.ActivityLogs)
@@ -99,7 +100,7 @@ namespace MyApiProject.Infrastructure.Persistence
                 .HasOne(f => f.Lead)
                 .WithMany(l => l.FollowUps)
                 .HasForeignKey(f => f.LeadId);
-
+ 
             modelBuilder.Entity<Admin>(entity =>
             {
                 entity.ToTable("Admins"); // Make sure this matches your actual DB table name

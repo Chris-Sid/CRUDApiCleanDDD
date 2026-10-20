@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyApiProject.API.ExceptionHandling;
+using MyApiProject.API.Handlers;
 using MyApiProject.Application.DTOs;
 using MyApiProject.Application.Mappings;
 using MyApiProject.Domain.Entities;
@@ -12,18 +14,21 @@ using MyApiProject.Infrastructure.Middleware;
 using MyApiProject.Infrastructure.Persistence;
 using MyApiProject.Infrastructure.Services;
 using System.Text;
+using System.Text.Json.Serialization;
+using ConcurrencyExceptionHandler = MyApiProject.API.ExceptionHandling.ConcurrencyExceptionHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //builder.Services.AddHttpClient();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+        o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddInfrastructure();
-
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -68,19 +73,25 @@ builder.Services.AddSwaggerGen(c =>
 
 var config = builder.Configuration;
 
+// register DbContext first (before services depending on it)
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var useInMemory = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
 
 if (useInMemory)
 {
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseInMemoryDatabase("CRMTestDB"));
+    builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("CRMTestDB"));
 }
 else
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
-        b => b.MigrationsAssembly("MyApiProject.Infrastructure")).EnableSensitiveDataLogging().LogTo(Console.WriteLine, LogLevel.Information).ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
+            b => b.MigrationsAssembly("MyApiProject.Infrastructure"))
+        .EnableSensitiveDataLogging()
+        .LogTo(Console.WriteLine, LogLevel.Information));
 }
+
+builder.Services.AddInfrastructure();
 
 builder.Configuration.AddEnvironmentVariables(); // Enable environment variables
 
@@ -131,6 +142,9 @@ builder.Services.AddAuthentication(options =>
 // Required for EF Core migrations
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 //builder.Services.AddScoped<SeedService>();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ConcurrencyExceptionHandler>();
+
 var app = builder.Build();
 if (!useInMemory)
 {
@@ -160,7 +174,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
- 
+app.UseExceptionHandler();
+
 app.MapControllers();
 
 app.Run();

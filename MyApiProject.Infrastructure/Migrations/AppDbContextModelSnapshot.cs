@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MyApiProject.Infrastructure.Migrations
+namespace MyApiProject.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace MyApiProject.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.ActivityLog", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.Activity.ActivityLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.ToTable("contactpersons");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.Customer", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -159,7 +159,7 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.ToTable("customers");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.FollowUp", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.FollowUps.FollowUp", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -185,7 +185,7 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.ToTable("followups");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.Lead", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.Leads.Lead", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -201,6 +201,12 @@ namespace MyApiProject.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.Property<string>("Source")
                         .IsRequired()
@@ -254,6 +260,12 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.Property<Guid>("RelatedCustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
                     b.Property<string>("Stage")
                         .IsRequired()
                         .HasColumnType("text");
@@ -269,7 +281,7 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.ToTable("opportunities");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.ActivityLog", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.Activity.ActivityLog", b =>
                 {
                     b.HasOne("MyApiProject.Domain.Entities.Opportunity", "Opportunity")
                         .WithMany("ActivityLogs")
@@ -282,7 +294,7 @@ namespace MyApiProject.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApiProject.Domain.Entities.CommunicationLog", b =>
                 {
-                    b.HasOne("MyApiProject.Domain.Entities.Customer", "Customer")
+                    b.HasOne("MyApiProject.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany("communicationlogs")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -293,7 +305,7 @@ namespace MyApiProject.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApiProject.Domain.Entities.ContactPerson", b =>
                 {
-                    b.HasOne("MyApiProject.Domain.Entities.Customer", "Customer")
+                    b.HasOne("MyApiProject.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany("contacts")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -302,9 +314,9 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.FollowUp", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.FollowUps.FollowUp", b =>
                 {
-                    b.HasOne("MyApiProject.Domain.Entities.Lead", "Lead")
+                    b.HasOne("MyApiProject.Domain.Entities.Leads.Lead", "Lead")
                         .WithMany("FollowUps")
                         .HasForeignKey("LeadId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -315,7 +327,7 @@ namespace MyApiProject.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApiProject.Domain.Entities.Note", b =>
                 {
-                    b.HasOne("MyApiProject.Domain.Entities.Customer", "RelatedCustomer")
+                    b.HasOne("MyApiProject.Domain.Entities.Customers.Customer", "RelatedCustomer")
                         .WithMany("notes")
                         .HasForeignKey("RelatedCustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,7 +338,7 @@ namespace MyApiProject.Infrastructure.Migrations
 
             modelBuilder.Entity("MyApiProject.Domain.Entities.Opportunity", b =>
                 {
-                    b.HasOne("MyApiProject.Domain.Entities.Customer", "RelatedCustomer")
+                    b.HasOne("MyApiProject.Domain.Entities.Customers.Customer", "RelatedCustomer")
                         .WithMany("opportunities")
                         .HasForeignKey("RelatedCustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -335,7 +347,7 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.Navigation("RelatedCustomer");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.Customer", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Navigation("communicationlogs");
 
@@ -346,7 +358,7 @@ namespace MyApiProject.Infrastructure.Migrations
                     b.Navigation("opportunities");
                 });
 
-            modelBuilder.Entity("MyApiProject.Domain.Entities.Lead", b =>
+            modelBuilder.Entity("MyApiProject.Domain.Entities.Leads.Lead", b =>
                 {
                     b.Navigation("FollowUps");
                 });

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyApiProject.Domain.Entities.Leads
 {
-    public class Lead
+    public class Lead : ConcurrentEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Source { get; set; } // Web, Referral, etc.

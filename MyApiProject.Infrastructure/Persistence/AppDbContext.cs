@@ -119,6 +119,57 @@ namespace MyApiProject.Infrastructure.Persistence
                 });
             });
 
+            /// <summary>
+            /// Configures optimistic concurrency for every entity inheriting from
+            /// ConcurrentEntity (e.g. Lead), mapping ConcurrencyToken to the
+            /// database's native row-versioning mechanism.
+            ///
+            /// --- SQL SERVER APPROACH ---
+            /// If this project targeted SQL Server, the [Timestamp] attribute on
+            /// ConcurrentEntity.ConcurrencyToken alone would be sufficient — EF's
+            /// SQL Server provider recognizes it as shorthand for:
+            ///
+            ///     entity.Property(e => e.ConcurrencyToken)
+            ///           .IsRowVersion();
+            ///
+            /// which maps to a `rowversion` column, auto-generated and incremented
+            /// by SQL Server on every write. No further Fluent API config needed.
+            ///
+            /// --- POSTGRESQL APPROACH (used here) ---
+            /// Npgsql has no `rowversion` concept, so we instead bind
+            /// ConcurrencyToken to PostgreSQL's hidden `xmin` system column, which
+            /// the database already updates automatically on every row write due to
+            /// its MVCC model (each UPDATE creates a new tuple whose `xmin` is the
+            /// writing transaction's ID). This requires explicit configuration
+            /// because `xmin` is a system column EF doesn't know about by default:
+            ///
+            ///   - HasColumnName("xmin")        -> bind to the real system column
+            ///   - HasColumnType("xid")         -> use Postgres's native xid type
+            ///   - ValueGeneratedOnAddOrUpdate()-> tell EF never to INSERT/UPDATE
+            ///                                    this value itself; the database
+            ///                                    always owns it
+            ///   - IsConcurrencyToken()         -> include it in the WHERE clause of
+            ///                                    generated UPDATE/DELETE statements,
+            ///                                    so a stale value causes zero rows
+            ///                                    to match and throws
+            ///                                    DbUpdateConcurrencyException
+            ///
+            /// Applied generically (via reflection over ConcurrentEntity) so any
+            /// new entity inheriting ConcurrentEntity automatically gets correct
+            /// concurrency mapping without repeating this block per entity.
+            /// </summary>
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(ConcurrentEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    modelBuilder.Entity(entityType.ClrType)
+                        .Property(nameof(ConcurrentEntity.ConcurrencyToken))
+                        .HasColumnName("xmin")
+                        .HasColumnType("xid")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .IsConcurrencyToken();
+                }
+            }
         }
     }
 

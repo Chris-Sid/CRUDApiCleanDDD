@@ -35,4 +35,8 @@
     <ProjectReference Include="..\MyApiProject.Application\MyApiProject.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
+
 </Project>

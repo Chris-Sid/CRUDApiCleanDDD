@@ -14,7 +14,7 @@ namespace MyApiProject.Infrastructure.Configurations
         public static void ApplyRowVersion<T>(this EntityTypeBuilder<T> builder)
             where T : ConcurrentEntity
         {
-            builder.Property(e => e.RowVersion)
+            builder.Property(e => e.ConcurrencyToken)
                    .HasColumnName("xmin")
                    .HasColumnType("xid")
                    .ValueGeneratedOnAddOrUpdate()

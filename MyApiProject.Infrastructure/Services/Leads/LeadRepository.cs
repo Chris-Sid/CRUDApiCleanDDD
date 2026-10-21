@@ -60,8 +60,29 @@ namespace MyApiProject.Infrastructure.Services.Leads
             var lead = await _context.leads.FirstOrDefaultAsync(l => l.Id == id);
             if (lead is null) return null;
 
-            // Compare against the version the client read, not the one just loaded
-            _context.Entry(lead).Property(l => l.RowVersion).OriginalValue = request.RowVersion;
+            /// <summary>
+            /// Tells EF Core what the client *believes* the row's current
+            /// concurrency token is (captured at the time the client last read
+            /// this Lead), rather than trusting the value just reloaded from the
+            /// database in the line above.
+            ///
+            /// --- SQL SERVER APPROACH ---
+            /// Here, OriginalValue would be set to the raw `rowversion` bytes the
+            /// client echoed back (typically base64-decoded from the API payload).
+            /// SQL Server compares this against the row's actual `rowversion` in
+            /// the generated UPDATE's WHERE clause.
+            ///
+            /// --- POSTGRESQL APPROACH (used here) ---
+            /// OriginalValue is set to the `xmin` transaction ID the client last
+            /// saw. EF/Npgsql generates:
+            ///
+            ///     UPDATE leads SET ... WHERE id = @id AND xmin = @originalXmin
+            ///
+            /// If another transaction already updated this row (creating a new
+            /// tuple with a different xmin), zero rows match this statement, and
+            /// EF throws DbUpdateConcurrencyException — caught below.
+            /// </summary>
+            _context.Entry(lead).Property(l => l.ConcurrencyToken).OriginalValue = request.ConcurrencyToken;
 
             lead.Source = request.Source;
             lead.ContactInfo = request.ContactInfo;

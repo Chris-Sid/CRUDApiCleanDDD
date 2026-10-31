@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyApiProject.Application.Interfaces;
 using MyApiProject.Domain.Entities.Customers;
 using MyApiProject.Domain.Entities.Leads;
@@ -9,10 +10,17 @@ namespace MyApiProject.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class LeadsController : ControllerBase
     {
         private readonly ILeadRepository _leadRepo;
-        public LeadsController(ILeadRepository leadRepo) { _leadRepo = leadRepo; }
+        private readonly ILogger<LeadsController> _logger;
+
+        public LeadsController(ILeadRepository leadRepo, ILogger<LeadsController> logger)
+        {
+            _leadRepo = leadRepo;
+            _logger = logger;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

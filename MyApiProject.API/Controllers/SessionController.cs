@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using MyApiProject.Application.DTOs;
-using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
-using MyApiProject.Infrastructure.Services.Session;
-using System.ComponentModel;
 using MyApiProject.Application.Interfaces;
+using MyApiProject.Infrastructure.Services.Session;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using MyApiProject.Application.Exceptions;
+using Microsoft.AspNetCore.Http.Features;
+using System.Linq;
+using MyApiProject.Infrastructure.Exceptions;
 
 namespace MyApiProject.API.Controllers
 {
@@ -16,27 +18,43 @@ namespace MyApiProject.API.Controllers
     // It uses the Authorization header token to look up the associated session data.
     // For simplicity, the session data is mocked and does not involve database queries.
     [ApiController]
+    [AllowAnonymous]
+    [EnableRateLimiting("login")]
     [Route("api/dms/token")]
     public class SessionController : ControllerBase
     {
         private readonly ISessionService _sessionService;
-        private readonly HttpClient _httpClient;
-        private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        public SessionController(ISessionService sessionService, IHttpClientFactory httpClientFactory, IJwtTokenGenerator jwtTokenGenerator)
+        private readonly ILogger<SessionController> _logger;
+
+        public SessionController(ISessionService sessionService, ILogger<SessionController> logger)
         {
             _sessionService = sessionService;
-            _httpClient = httpClientFactory.CreateClient();
-            _jwtTokenGenerator = jwtTokenGenerator;
+            _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetSession([DefaultValue("en-US")] string? accept_Language,[FromBody] TokenRequest body, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetSession([FromBody] TokenRequest body)
         {
-            var token = await _sessionService.GetOrCreateSessionAsync(body, TimeSpan.FromMinutes(30));
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            // Return the token response
-            return Ok($"Successfully logged in. Use this token in Authorization header: {token}");
+            try
+            {
+                var token = await _sessionService.GetOrCreateSessionAsync(body, TimeSpan.FromMinutes(30));
+
+                _logger.LogInformation("Successful login for {UserName} from {Ip}", Sanitize(body.UserName), ip);
+                return Ok(new { accessToken = token, tokenType = "Bearer", expiresInSeconds = 1800 });
+            }
+            catch (ApiException ex) when (ex.StatusCode == StatusCodes.Status401Unauthorized)
+            {
+                _logger.LogWarning("Failed login for {UserName} from {Ip}", Sanitize(body?.UserName), ip);
+                throw; // ExceptionMiddleware still produces the 401 response
+            }
         }
+
+        // Prevents log forging with line breaks and caps the length of attacker-controlled text
+        private static string Sanitize(string? value) =>
+            string.IsNullOrEmpty(value)
+                ? "(empty)"
+                : new string(value.Where(c => !char.IsControl(c)).Take(100).ToArray());
     }
 }

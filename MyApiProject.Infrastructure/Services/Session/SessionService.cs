@@ -60,30 +60,21 @@ namespace MyApiProject.Infrastructure.Services.Session
 
         public async Task<string> GetOrCreateSessionAsync(TokenRequest request, TimeSpan expiration)
         {
-            if (string.IsNullOrWhiteSpace(request?.UserName))
-                throw new ArgumentException("Username cannot be null or empty.");
+            if (string.IsNullOrWhiteSpace(request?.UserName) || string.IsNullOrWhiteSpace(request?.Password))
+                throw new ApiException("Invalid credentials.", StatusCodes.Status400BadRequest, null, null, null);
 
-            if (string.IsNullOrWhiteSpace(request?.Password))
-                throw new ArgumentException("Password cannot be null or empty.");
+            // 1. Always validate credentials first. GenerateJwtToken verifies the BCrypt hash.
+            var newToken = _jwtTokenGenerator.GenerateJwtToken(request.UserName, request.Password);
+            if (newToken is null)
+                throw new ApiException("Invalid credentials.", StatusCodes.Status401Unauthorized, null, null, null);
 
+            // 2. Cache only the token (no password). Reuse is safe because credentials were just verified.
             var cacheKey = GetCacheKey(request.UserName);
-
             var existingToken = await _redisDb.StringGetAsync(cacheKey);
             if (!existingToken.IsNullOrEmpty)
-            {
                 return existingToken!;
-            }
-
-            var newToken = _jwtTokenGenerator.GenerateJwtToken(request.UserName,request.Password);
-
-            if (newToken is null)
-                throw new ApiException("Unauthorized",(int)StatusCodes.Status401Unauthorized,null,null,null);
-
-            var sessionJson = JsonSerializer.Serialize(request);
 
             await _redisDb.StringSetAsync(cacheKey, newToken, expiration);
-            await _redisDb.StringSetAsync(newToken, sessionJson, expiration);
-
             return newToken;
         }
         private static string GetCacheKey(string userName) => $"session:{userName}";

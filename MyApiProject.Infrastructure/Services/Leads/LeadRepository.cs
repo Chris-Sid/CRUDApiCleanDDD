@@ -82,7 +82,7 @@ namespace MyApiProject.Infrastructure.Services.Leads
             /// tuple with a different xmin), zero rows match this statement, and
             /// EF throws DbUpdateConcurrencyException — caught below.
             /// </summary>
-            _context.Entry(lead).Property(l => l.ConcurrencyToken).OriginalValue = request.ConcurrencyToken;
+            _context.Entry(lead).Property(l => l.ConcurrencyToken).OriginalValue = request.ConcurrencyToken!.Value;
 
             lead.Source = request.Source;
             lead.ContactInfo = request.ContactInfo;

@@ -7,9 +7,28 @@ namespace MyApiProject.Domain.Entities.Leads
     /// </summary>
     public class UpdateLeadRequest
     {
+        /// <summary>
+        /// The lead's origination source, e.g. "Website", "Phone Inquiry", etc.
+        /// </summary>
+        [Required, StringLength(100)]
         public string Source { get; set; }
+
+        /// <summary>
+        /// The lead's contact information, e.g. email address or phone number.
+        /// </summary>
+        [Required, EmailAddress, StringLength(200)]
         public string ContactInfo { get; set; }
+
+        /// <summary>
+        /// The identifier of the user or entity this lead is assigned to.
+        /// </summary>
+        [Required, StringLength(100)]
         public string AssignedTo { get; set; }
+
+        /// <summary>
+        /// The current status of the lead in the sales pipeline.
+        /// </summary>
+        [Required, RegularExpression("^(New|Contacted|Qualified|Approved|Converted|Lost)$")]
         public string Status { get; set; }
 
         /// <summary>
@@ -43,6 +62,7 @@ namespace MyApiProject.Domain.Entities.Leads
         /// no effect on a plain request DTO, so it was removed to avoid
         /// implying behavior that doesn't exist here.
         /// </summary>
-        public uint ConcurrencyToken { get; set; }
+        [Required]
+        public uint? ConcurrencyToken { get; set; } // null (missing) is now rejected with 400 instead of defaulting to 0
     }
 }

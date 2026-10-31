@@ -9,51 +9,50 @@ using System.IdentityModel.Tokens.Jwt;
 using MyApiProject.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MyApiProject.Infrastructure.Persistence;
+using Microsoft.Extensions.Options;
+using MyApiProject.Application.DTOs;
 
 namespace MyApiProject.Infrastructure.Helpers
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
+        // Valid BCrypt hash of a random value, used so unknown users cost the same time as known users
+        private static readonly string DummyHash = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString(), 11);
+
         private readonly AppDbContext _dbContext;
-        public JwtTokenGenerator(AppDbContext dbContext)
+        private readonly JwtSettings _jwt;
+
+        public JwtTokenGenerator(AppDbContext dbContext, IOptions<JwtSettings> jwtOptions)
         {
             _dbContext = dbContext;
+            _jwt = jwtOptions.Value;
         }
-        public string GenerateJwtToken(string username, string password)
+
+        public string? GenerateJwtToken(string username, string password)
         {
-            // Fetch the user from the database
             var admin = _dbContext.Admins.SingleOrDefault(a => a.Username == username);
 
-            // Validate user exists and has Admin role
-            if (admin == null || admin.Role != "Admin")
+            // Always run a verify so response time doesn't reveal whether the user exists
+            var passwordValid = BCrypt.Net.BCrypt.Verify(password, admin?.PasswordHash ?? DummyHash);
+            if (admin is null || !passwordValid || admin.Role != "Admin")
                 return null;
 
-            if (!BCrypt.Net.BCrypt.Verify(password, admin.PasswordHash))
-            {
-                // Wrong password
-                return null;
-            }
-
-            var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-;
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
-            new Claim(ClaimTypes.Role, "Admin"),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, admin.Username),
+                new Claim(ClaimTypes.Role, admin.Role),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var token = new JwtSecurityToken(
-                issuer: "test.gr",
-                audience: "test",
+                issuer: _jwt.Issuer,
+                audience: _jwt.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(30),
-                signingCredentials: creds
-            );
+                expires: DateTime.UtcNow.AddMinutes(_jwt.ExpiryMinutes),
+                signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyApiProject.Infrastructure.Exceptions;
 using System;
@@ -16,12 +17,14 @@ namespace MyApiProject.Infrastructure.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly IHostEnvironment _env;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env)
         {
             _next = next;
             _logger = logger;
-        }
+            _env = env;
+        }       
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
@@ -31,34 +34,32 @@ namespace MyApiProject.Infrastructure.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, "Unhandled exception. TraceId: {TraceId}", httpContext.TraceIdentifier);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            if (exception is ApiException apiEx)
-            {
-                context.Response.StatusCode = apiEx.StatusCode;
-            }
-            else
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            }
+            var statusCode = exception is ApiException apiEx
+                ? apiEx.StatusCode
+                : (int)HttpStatusCode.InternalServerError;
 
-            ProblemDetails problem = new ProblemDetails
+            context.Response.ContentType = "application/problem+json";
+            context.Response.StatusCode = statusCode;
+
+            var problem = new ProblemDetails
             {
-                Title = "Internal Server Error",
-                Detail = exception.Message,
-                Status = (int)context.Response.StatusCode,
-                Type = $"https://httpstatuses.com/{(int)context.Response.StatusCode}",
+                Title = statusCode >= 500 ? "An unexpected error occurred." : "The request could not be processed.",
+                Detail = exception is ApiException || _env.IsDevelopment()
+                    ? exception.Message
+                    : "Contact support and provide the trace id.",
+                Status = statusCode,
+                Type = $"https://httpstatuses.com/{statusCode}",
                 Instance = context.TraceIdentifier
             };
 
-            var result = JsonSerializer.Serialize(problem);
-            return context.Response.WriteAsync(result);
+            return context.Response.WriteAsync(JsonSerializer.Serialize(problem));
         }
 
     }

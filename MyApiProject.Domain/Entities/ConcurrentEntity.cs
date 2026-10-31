@@ -56,6 +56,6 @@ namespace MyApiProject.Domain.Entities
     /// </summary>
     public abstract class ConcurrentEntity
     {
-        public uint ConcurrencyToken { get; set; }
+        public uint? ConcurrencyToken { get; set; }
     }
 }

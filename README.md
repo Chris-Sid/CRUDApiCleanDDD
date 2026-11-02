@@ -8,6 +8,19 @@ A scalable, testable CRM system with JWT-based authentication, Redis caching, Po
 - ✅ **Full CRUD Operations**  
   Manage **Customers**, **Leads**, and **Opportunities** through clean, RESTful endpoints.
 
+- ✅ **OWASP top 10**
+  
+- ✅ **DBConcurrency Exception Handling**  
+   ConcurrencyToken, mapped to PostgreSQL xmin). It prevents one client from silently overwriting changes another client saved first.
+  1.	Client A and Client B both GET the lead. Both receive concurrencyToken: 799.
+  2.	Client B saves a change. PostgreSQL creates a new row version and xmin becomes a new value, for example 800.
+  3.	Client A saves with the old token 799. EF Core generates:
+     
+    	UPDATE leads SET ... WHERE id = @id AND xmin = 799
+    	This line tells EF "the client believes the row is at this version". EF then adds it to the WHERE clause. Without it, EF would compare against the value it just loaded, which is           always current, and the conflict would never be detected.
+
+   This lines does the Job _context.Entry(lead).Property(l => l.ConcurrencyToken).OriginalValue = request.ConcurrencyToken!.Value;
+    
 - 📊 **Analytics Endpoint (Aggregation Service)**  
   Summarizes key metrics like active leads, top sales reps, inactive customers, and won deals this month.
 

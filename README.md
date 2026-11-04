@@ -73,6 +73,8 @@ A scalable, testable CRM system with JWT-based authentication, Redis caching, Po
 - Include the token in every request using the custom header:
   ```
   X-Authorization: {your-token}
+  or
+- Auth Bearer Token and you paste your JWT{your-token}
   ```
 
 ---
@@ -173,7 +175,6 @@ Edit `appsettings.json`:
 
 - ⏳ More advanced domain validation rules
 - 🧪 More xUnit test coverage (services + API layers)
-- 📈 Add Swagger docs for easy endpoint discovery
 
 ---
 > 🏷️ Tech Tags:  
